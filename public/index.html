@@ -11,6 +11,13 @@
     <noscript>
       <strong>We're sorry but rast-gmap-with-my-own-component doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <script>
+      var _global_initMap = false;
+      function initMap(){
+        _global_initMap = true
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtsOk0uU5L9qaB7usCiLVHgWGuyAqWOCA&callback=initMap"></script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

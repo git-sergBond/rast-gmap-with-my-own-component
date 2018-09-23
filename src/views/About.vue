@@ -70,7 +70,7 @@ export default Vue.extend({
     for(let p of  testTradePoints){
       new TradePoint(p,map);
     }
-    let estUserPoints : any[] = [
+    let testUserPoints : any[] = [
         {
             "userid": 9,
             "email": "sumkin@mail.ru",

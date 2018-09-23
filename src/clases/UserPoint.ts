@@ -5,31 +5,53 @@ type gMap = google.maps.Map;
 /*
 класс Пользователь оказания услуги, для google.maps
 */
+/*
+            
+*/
 export default class UserPoint extends Point{
 
-    public pointid? : number;//id точки / null - если создана новая точка в клиентском приложении
-    public name? : string;// название точки оказания услуг
-    public address? : string;//адресс
-    public phones? : string[];//массив имеющихся id телеФОНОВ
-    public newPhones : number[] = [];//массив id новых созданных телеФОНОВ в клиентском приложении
-    public categories : number[] =[];//ид категорий, к которым нужно привязать услугу
+    userid?: Number
+    email?: string
+    phone?: string
+    firstname?: string
+    lastname?: string
+    patronymic?: string
+    lasttime?: string // "2019-09-08 16:00:30+00",
+    male?: Number
+    birthday?: string // "1997-05-25 00:00:00+00",
+    pathtophoto?: string // "images/users/d4dd0c47.jpg",
+    status?: string
 
-    constructor(sourcePoint : any, _gm_mapInst : gMap){
-        super(sourcePoint.latitude,sourcePoint.longitude,_gm_mapInst);
+    constructor(sourceUser : any, _gm_mapInst : gMap){
+        super(Number(sourceUser.latitude),Number(sourceUser.longitude),_gm_mapInst);
         try{
 
             //данные принимаемые с сервера
             const {
-                pointid,
-                name,
-                address,
-                phones
-            } = sourcePoint;
+                userid,
+                email,
+                phone,
+                firstname,
+                lastname,
+                patronymic,
+                lasttime,
+                male,
+                birthday,
+                pathtophoto,
+                status
+            } = sourceUser;
 
-            this.pointid = !!pointid ? pointid : null
-            this.name = name 
-            this.address = address;
-            this.phones = phones;
+            this.userid = !!userid ? userid : null;
+            this.email = email;
+            this.phone = phone;
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.patronymic = patronymic;
+            this.lasttime = lasttime;
+            this.male = Number(male);
+            this.birthday = birthday;
+            this.pathtophoto = pathtophoto;
+            this.status = status;
 
         } catch (e) {
             console.log('class UserPoint.constructor() :',e.message)

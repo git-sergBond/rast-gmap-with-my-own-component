@@ -14,8 +14,8 @@ export default class TradePoint extends Point{
     public newPhones : number[] = [];//массив id новых созданных телеФОНОВ в клиентском приложении
     public categories : number[] =[];//ид категорий, к которым нужно привязать услугу
 
-    constructor(sourcePoint : any, _gm_mapInst : gMap){
-        super(sourcePoint.latitude,sourcePoint.longitude,_gm_mapInst);
+    constructor(sourceTrade : any, _gm_mapInst : gMap){
+        super(Number(sourceTrade.latitude),Number(sourceTrade.longitude),_gm_mapInst);
         try{
 
             //данные принимаемые с сервера
@@ -24,7 +24,7 @@ export default class TradePoint extends Point{
                 name,
                 address,
                 phones
-            } = sourcePoint;
+            } = sourceTrade;
 
             this.pointid = !!pointid ? pointid : null
             this.name = name 

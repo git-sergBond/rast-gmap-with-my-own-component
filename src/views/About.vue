@@ -13,6 +13,7 @@ import Vue from 'vue'
 import Point from '../clases/Point'
 import TradePoint from '../clases/TradePoint'
 import UserPoint from '../clases/UserPoint'
+import Map from '../clases/Map'
 
 export default Vue.extend({
   /*
@@ -21,13 +22,8 @@ export default Vue.extend({
   },*/
   mounted(){
     console.log('mounted',_global_initMap)
-    let map : any = new google.maps.Map(this.$refs.ssgmap as Element, {
-      center: {
-        lat: 55.452376,
-        lng: 37.372236
-      },
-      zoom: 8
-    })
+    let map = new Map(this.$refs.ssgmap as Element, 55.452376, 37.372236, 8);
+    //
     let testTradePoints : any[] = [
       {
                     "pointid": 4,
@@ -67,10 +63,13 @@ export default Vue.extend({
                     ]
                 }
     ]
+    let tradeList: TradePoint[] = [];
     for(let p of  testTradePoints){
       let e = new TradePoint(p,map);
       e.addEvents([{type:'click',event:this.clickOnTradePoint}])
+      tradeList.push(e);
     }
+    //
     let testUserPoints : any[] = [
         {
             "userid": 9,
@@ -148,9 +147,11 @@ export default Vue.extend({
             "status": null
         }
     ]
+    let userList : UserPoint[] = [];
     for(let p of  testUserPoints){
       let e = new UserPoint(p,map);
       e.addEvents([{type:'click',event:this.clickOnUserPoint}])
+      userList.push(e);
     }
   },
   methods: {

@@ -1,4 +1,5 @@
 import Point from '@/clases/Point';
+import Map from '@/clases/Map'
 type gMarker = google.maps.Marker;
 type gMap = google.maps.Map;
 //_gm_ объект связанный с библиотекой google.maps
@@ -22,8 +23,8 @@ export default class UserPoint extends Point{
     pathtophoto?: string // "images/users/d4dd0c47.jpg",
     status?: string
 
-    constructor(sourceUser : any, _gm_mapInst : gMap){
-        super(Number(sourceUser.latitude),Number(sourceUser.longitude),_gm_mapInst);
+    constructor(sourceUser : any, _gm_mapInst : Map){
+        super(Number(sourceUser.latitude),Number(sourceUser.longitude),_gm_mapInst.getInst());
         try{
 
             //данные принимаемые с сервера

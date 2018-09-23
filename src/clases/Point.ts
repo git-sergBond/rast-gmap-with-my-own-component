@@ -42,12 +42,10 @@ export default class Point {
 
     //добавление событий
     public addEvents(events : any[]){
-console.log(1)
         //click, драг(dragend), двойной клик, наведение
         if(!!events) for(let {type , event} of events) {
             (this._gm_markInst as google.maps.Marker).addListener(type, event);
         }
-        
     }
 /*
     //измененить название на иконке, которое будет соответствовать точке

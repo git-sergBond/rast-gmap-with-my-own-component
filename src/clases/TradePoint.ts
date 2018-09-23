@@ -1,4 +1,5 @@
 import Point from '@/clases/Point';
+import Map from '@/clases/Map';
 type gMarker = google.maps.Marker;
 type gMap = google.maps.Map;
 //_gm_ объект связанный с библиотекой google.maps
@@ -14,8 +15,8 @@ export default class TradePoint extends Point{
     public newPhones : number[] = [];//массив id новых созданных телеФОНОВ в клиентском приложении
     public categories : number[] =[];//ид категорий, к которым нужно привязать услугу
 
-    constructor(sourceTrade : any, _gm_mapInst : gMap){
-        super(Number(sourceTrade.latitude),Number(sourceTrade.longitude),_gm_mapInst);
+    constructor(sourceTrade : any, _gm_mapInst : Map){
+        super(Number(sourceTrade.latitude), Number(sourceTrade.longitude), _gm_mapInst.getInst());
         try{
 
             //данные принимаемые с сервера

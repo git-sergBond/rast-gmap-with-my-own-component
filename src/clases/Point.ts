@@ -2,22 +2,30 @@ type gMarker = google.maps.Marker;
 type gMap = google.maps.Map;
 //_gm_ объект связанный с библиотекой google.maps
 /*
-класс Точка, для google.maps
+класс Точка, для библиотеки google.maps
 */
 export default class Point {
+
+    public latitude? : number; //широта
+    public longitude? : number;//долгота
 
     protected _gm_markInst? : gMarker;//ссылка на объект маркера
     protected _gm_mapInst? : gMap;//ссылка на карту к которой привязан маркер
 
     constructor(lat : number, lng : number, _gm_mapInst : gMap) {
         try {
-            this._gm_mapInst = _gm_mapInst;
-            this._gm_markInst = new google.maps.Marker({
-                map: _gm_mapInst,
-                position: {
+
+            this.latitude = lat;//широта
+            this.longitude = lng;//долгота
+
+            this._gm_mapInst = _gm_mapInst;//ссылка на карту к которой привязан маркер
+            this._gm_markInst = new google.maps.Marker({//создаем маркер
+                map: _gm_mapInst,//привязываем карту
+                position: {//указываем позицию
                     lat, lng
                 }
             });
+            
         } catch (e) {
             console.log('class Point.constructor() :',e.message)
         }

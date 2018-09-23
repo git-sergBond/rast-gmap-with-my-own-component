@@ -9,32 +9,30 @@
 //// <reference path="@types/index.d.ts" />
 //import IncludeSsgmapMap from '@/comments/IncludeSsgmapMap.vue'
 import Vue from 'vue'
-import {} from 'googlemaps'
+import Point from '../clases/Point'
 export default Vue.extend({
   /*
   components: {
     IncludeSsgmapMap
   },*/
   mounted(){
-    /*
-    const _refMapHtml : any = this.$refs['ssgmap-load-script-from-google'];
-    _refMapHtml.add.createElement('script',
-    {
-        type: 'text/javascript',
-        src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCtsOk0uU5L9qaB7usCiLVHgWGuyAqWOCA&callback=initMap',
-        onload: () => {
-          console.log('doMapInitLogic()')
-        }
-    });*/
-console.log('mounted')
     console.log('mounted',_global_initMap)
-    new google.maps.Map(this.$refs.ssgmap as Element, {
+    let map : any = new google.maps.Map(this.$refs.ssgmap as Element, {
       center: {
-        lat: -34.397,
-        lng: 150
+        lat: 55.452376,
+        lng: 37.372236
       },
       zoom: 8
     })
+    new Point(56.452376,37.372236,map);
+    new Point(55.452376,37.372236,map);
+    new Point(54.452376,37.372236,map);
+    new Point(56.452376,38.372236,map);
+    new Point(55.452376,38.372236,map);
+    new Point(54.452376,38.372236,map);
+    new Point(56.452376,39.372236,map);
+    new Point(55.452376,39.372236,map);
+    new Point(54.452376,39.372236,map);
   }
 })
 </script>

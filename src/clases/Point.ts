@@ -31,6 +31,24 @@ export default class Point {
         }
     }
 
+    //изменение цвета
+    static blue : string = "http://maps.google.com/mapfiles/ms/icons/blue.png";
+    static yelow : string = "http://maps.google.com/mapfiles/ms/icons/yellow.png";
+    static red : string = "http://maps.google.com/mapfiles/ms/icons/red.png";
+
+    protected setIconColor(color : string){
+        (this._gm_markInst as google.maps.Marker).setIcon(color)
+    }
+
+    //добавление событий
+    public addEvents(events : any[]){
+console.log(1)
+        //click, драг(dragend), двойной клик, наведение
+        if(!!events) for(let {type , event} of events) {
+            (this._gm_markInst as google.maps.Marker).addListener(type, event);
+        }
+        
+    }
 /*
     //измененить название на иконке, которое будет соответствовать точке
     changeCaption(){
@@ -95,13 +113,7 @@ export default class Point {
         }
         return p;
     }
-    //добавление событий
-    addEvents(events){
-        //click, драг(dragend), двойной клик, наведение
-        if(!!events) for(let {name,event} of events) {
-            this.pointInst.events.add(name, event);
-        }
-    }
+    
     //установка видимости метки
     SetVisibleOnMap(vis){
         try{

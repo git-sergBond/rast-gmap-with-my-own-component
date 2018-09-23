@@ -31,6 +31,8 @@ export default class TradePoint extends Point{
             this.address = address;
             this.phones = phones;
 
+            this.setIconColor(Point.red);
+
         } catch (e) {
             console.log('class UserPoint.constructor() :',e.message)
         }

@@ -53,9 +53,18 @@ export default class UserPoint extends Point{
             this.pathtophoto = pathtophoto;
             this.status = status;
 
+            if(Boolean(male)){
+                this.setIconColor(Point.yelow)
+            } else {
+                this.setIconColor(Point.blue)
+            }        
+
         } catch (e) {
             console.log('class UserPoint.constructor() :',e.message)
         }
     }
     
+    preProperties(){
+               
+    }
 }

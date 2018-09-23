@@ -68,7 +68,8 @@ export default Vue.extend({
                 }
     ]
     for(let p of  testTradePoints){
-      new TradePoint(p,map);
+      let e = new TradePoint(p,map);
+      e.addEvents([{type:'click',event:this.clickOnTradePoint}])
     }
     let testUserPoints : any[] = [
         {
@@ -96,7 +97,7 @@ export default Vue.extend({
             "longitude": "38.429777623455",
             "latitude": "55.310895612457",
             "lasttime": "2019-09-08 16:00:30+00",
-            "male": 1,
+            "male": 0,
             "birthday": null,
             "pathtophoto": null,
             "status": null
@@ -126,7 +127,7 @@ export default Vue.extend({
             "longitude": "37.809275304119",
             "latitude": "56.108756746459",
             "lasttime": "2019-09-08 16:00:30+00",
-            "male": 1,
+            "male": 0,
             "birthday": null,
             "pathtophoto": null,
             "status": null
@@ -148,7 +149,16 @@ export default Vue.extend({
         }
     ]
     for(let p of  testUserPoints){
-      new UserPoint(p,map);
+      let e = new UserPoint(p,map);
+      e.addEvents([{type:'click',event:this.clickOnUserPoint}])
+    }
+  },
+  methods: {
+    clickOnTradePoint(){
+      alert(1)
+    },
+    clickOnUserPoint(){
+      alert(2)
     }
   }
 })

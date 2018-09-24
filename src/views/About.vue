@@ -14,6 +14,7 @@ import Point from '../clases/Point'
 import TradePoint from '../clases/TradePoint'
 import UserPoint from '../clases/UserPoint'
 import Map from '../clases/Map'
+import Cluster from '../clases/Cluster'
 
 export default Vue.extend({
   /*
@@ -69,6 +70,7 @@ export default Vue.extend({
       e.addEvents([{type:'click',event:this.clickOnTradePoint}])
       tradeList.push(e);
     }
+    new Cluster(tradeList,map);
     //
     let testUserPoints : any[] = [
         {
@@ -153,6 +155,7 @@ export default Vue.extend({
       e.addEvents([{type:'click',event:this.clickOnUserPoint}])
       userList.push(e);
     }
+    new Cluster(userList,map);
   },
   methods: {
     clickOnTradePoint(){
@@ -169,11 +172,11 @@ export default Vue.extend({
 height: 500px;
 width: 500px;
 }
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 </style>
 

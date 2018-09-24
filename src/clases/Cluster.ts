@@ -1,12 +1,17 @@
 import Point from '@/clases/Point';
 import Map from '@/clases/Map'
+import MarkerClusterer from 'marker-clusterer-plus'
 export default class Cluster {
-   // _gm_clusterInst : Marker
-    constructor(points : Point[], map : Map[]){
+    constructor(points : Point[], map : Map){
         try{
-            
+            let arrPoints : google.maps.Marker[] = points.map(e => e.getInst())
+            let clist : any = new MarkerClusterer(map.getInst(),arrPoints,{
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+              })
+              /*arrPoints.forEach(e=>clist.add)
+              arrPoints */
         } catch(e) {
-            console.log('class Cluster.constructor()',e.message)
+            console.log('class Cluster.constructor()'+e.message)
         }
     }
 }

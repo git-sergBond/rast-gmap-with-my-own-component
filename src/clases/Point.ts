@@ -47,6 +47,10 @@ export default class Point {
             (this._gm_markInst as google.maps.Marker).addListener(type, event);
         }
     }
+
+    public getInst(){
+        return this._gm_markInst as google.maps.Marker;
+    }
 /*
     //измененить название на иконке, которое будет соответствовать точке
     changeCaption(){

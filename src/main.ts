@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import {} from 'googlemaps'
+import markerCluster from 'marker-clusterer-plus'
 Vue.config.productionTip = false
 
 new Vue({

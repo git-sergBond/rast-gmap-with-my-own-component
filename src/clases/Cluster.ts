@@ -8,8 +8,6 @@ export default class Cluster {
             let clist : any = new MarkerClusterer(map.getInst(),arrPoints,{
                 imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
               })
-              /*arrPoints.forEach(e=>clist.add)
-              arrPoints */
         } catch(e) {
             console.log('class Cluster.constructor()'+e.message)
         }

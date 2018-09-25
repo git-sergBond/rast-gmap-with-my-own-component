@@ -7,8 +7,11 @@
         <div>
           <h3> Фильтры </h3>
         </div>
-        <div class="item" v-for="p in filteredData.UserPoints" :key='p.pointid'>
+        <div class="item" v-for="p in filteredData.UserPoints" :key='p.userid'>
+          <div>
+          <!--p>{{getUserPoint(key).firstname}}</p-->
           <p>ФИО</p>
+          </div>
         </div>
       </div>
       <div ref="ssgmap" id='ssgmap-id'></div>
@@ -52,8 +55,8 @@ export default Vue.extend({
         UserPoints : [],
       },
       filteredData : {
-        TradePoints :  [2,3,4],
-        UserPoints : [1,2,3],
+        TradePoints :  [4,13],
+        UserPoints : [9,142,143,148],
       }
   }},
   mounted(){
@@ -99,19 +102,7 @@ export default Vue.extend({
                     ]
                 }
     ]
-
-    try{
-
-      this.$data.source.TradePoints = [];
-      for(let p of  testTradePoints){
-        let e = new TradePoint(p,map);
-        e.addEvents([{type:'click',event:this.clickOnTradePoint}])
-        this.$data.source.TradePoints.push(e);
-      }
-      this.$data.markClusters.TradePoints = new Cluster(this.$data.source.TradePoints,map);
-    
-      //
-      let testUserPoints : any[] = [
+     let testUserPoints : any[] = [
           {
               "userid": 9,
               "email": "sumkin@mail.ru",
@@ -188,6 +179,17 @@ export default Vue.extend({
               "status": null
           }
       ]
+    try{
+
+      this.$data.source.TradePoints = [];
+      for(let p of  testTradePoints){
+        let e = new TradePoint(p,map);
+        e.addEvents([{type:'click',event:this.clickOnTradePoint}])
+        this.$data.source.TradePoints.push(e);
+      }
+      this.$data.markClusters.TradePoints = new Cluster(this.$data.source.TradePoints,map);
+    
+      //
       this.$data.source.UserPoints  = [];
       for(let p of  testUserPoints){
         let e = new UserPoint(p,map);
@@ -200,13 +202,29 @@ export default Vue.extend({
       alert(e.message)
     }
   },
+  watch: {
+    
+  },
   methods: {
     clickOnTradePoint(){
       alert(1)
     },
     clickOnUserPoint(){
       alert(2)
-    }
+    },
+    /*
+    getUserPoints(id : number) : UserPoint{
+      let result = this.$data.source.UserPoints.filter((e : UserPoint)=>{
+        return e.userid == id;
+      });
+      return result[0] as UserPoint;
+    },
+    getTradePoint(id : number) : TradePoint{
+      let result = this.$data.source.TradePoints.filter((e : TradePoint)=>{
+        return e.pointid == id;
+      });
+      return result[0] as TradePoint;
+    }*/
   }
 })
 </script>

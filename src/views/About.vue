@@ -1,27 +1,23 @@
 <template>
   <div class="about">
-    <!--include-ssgmap-map></include-ssgmap-map-->
-    <div class="flex-row">
-      <div>
+    <div class="flex-collumns">
+      <div class="side-collums">
         <h3>Люди</h3>
         <div>
           <h3> Фильтры </h3>
         </div>
-        <div class="item" v-for="p in filteredData.UserPoints" :key='p.userid'>
-          <div>
-          <!--p>{{getUserPoint(key).firstname}}</p-->
-          <p>ФИО</p>
-          </div>
+        <div class="item" v-for="p in cUserPoints" :key='p.userid' >
+            <p>{{p.firstname}}</p>
         </div>
       </div>
       <div ref="ssgmap" id='ssgmap-id'></div>
-      <div>
+      <div class="side-collums">
         <h3>Услуги</h3>
         <div>
           <h3> Фильтры </h3>
         </div>
-        <div class="item" v-for="p in filteredData.TradePoints" :key='p.pointid'>
-          <p>Название</p>
+        <div class="item" v-for="p in cTradePoints" :key='p.pointid'>
+          <p>{{p.name}}</p>
         </div>
       </div>
     </div>
@@ -55,7 +51,7 @@ export default Vue.extend({
         UserPoints : [],
       },
       filteredData : {
-        TradePoints :  [4,13],
+        TradePoints :  [],
         UserPoints : [9,142,143,148],
       }
   }},
@@ -197,13 +193,12 @@ export default Vue.extend({
         this.$data.source.UserPoints.push(e);
       }
       this.$data.markClusters.UserPoints = new Cluster(this.$data.source.UserPoints,map);
-
+      //
+      this.$data.filteredData.TradePoint = [4,13];
+      this.$data.filteredData.UserPoints = [9,142,143,148];
     } catch (e) {
       alert(e.message)
     }
-  },
-  watch: {
-    
   },
   methods: {
     clickOnTradePoint(){
@@ -211,50 +206,71 @@ export default Vue.extend({
     },
     clickOnUserPoint(){
       alert(2)
+    }
+  },
+  computed: {
+    cTradePoints() {
+      let res = <any> [];
+      try{
+        for(const id of this.filteredData.TradePoints){
+          for(const p of this.$data.source.TradePoints){
+            if(p.pointid == id){
+              res.push(p);
+              break;
+            }
+          }
+        }
+      } catch (e) {
+        alert(e.message)
+      }
+      return res;
     },
-    /*
-    getUserPoints(id : number) : UserPoint{
-      let result = this.$data.source.UserPoints.filter((e : UserPoint)=>{
-        return e.userid == id;
-      });
-      return result[0] as UserPoint;
-    },
-    getTradePoint(id : number) : TradePoint{
-      let result = this.$data.source.TradePoints.filter((e : TradePoint)=>{
-        return e.pointid == id;
-      });
-      return result[0] as TradePoint;
-    }*/
+    cUserPoints() {
+      let res = <any> [];
+      try{
+        for(const id of this.filteredData.UserPoints){
+          for(const p of this.$data.source.UserPoints){
+            if(p.pointid == id){
+              res.push(p);
+              break;
+            }
+          }
+        }
+      } catch (e) {
+        alert(e.message)
+      }
+      return res;
+    }
   }
 })
 </script>
 <style lang="scss" scoped>
-#ssgmap-id {
-height: 500px;
-width: 500px;
+.about{
+  display: flex;
+  justify-content: space-between
 }
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
-.flex-row{
+.flex-collumns{
   display: flex;
   width: 100%;
-  justify-content: center;
-  div {
+  justify-content: space-between;
+
+  #ssgmap-id {
+height: 500px;
+width: 500px;
+}
+
+  .side-collums{
+    width: 200PX;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    .item{
-      border: 1px solid black;
-      margin: 5px;
-    }
-    h1 {
-      justify-self: center;
-    }
+    align-items: center;
   }
+
 }
 </style>
 

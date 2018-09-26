@@ -7,7 +7,7 @@ type gMap = google.maps.Map;
 класс Пользователь оказания услуги, для google.maps
 */
 /*
-            
+
 */
 export default class UserPoint extends Point{
 

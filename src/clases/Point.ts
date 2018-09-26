@@ -48,8 +48,18 @@ export default class Point {
         }
     }
 
+    //получить instance объекта гугл карты
     public getInst(){
         return this._gm_markInst as google.maps.Marker;
+    }
+
+    //установка видимости метки
+    public setVisible(vis : boolean){
+        try{
+            (this._gm_markInst as google.maps.Marker).setVisible(vis);
+        }catch(e){
+            console.log('class TradePoint.setVisible() : '+e.message)
+        }
     }
 /*
     //измененить название на иконке, которое будет соответствовать точке
@@ -86,43 +96,6 @@ export default class Point {
             console.log('class TradePoint.setCoordsForAdress() : '+e.message)
         }
     }
-    //метод отрисовки метки на карте
-    DrawOnMap(properties={},events=[],draggable=false){
-        let context = this
-        let p = new ymaps.Placemark([this.latitude,this.longitude], 
-        {
-            iconCaption: context.name
-        }, 
-        {
-            preset: 'islands#darkblueDotIconWithCaption',
-            draggable: draggable
-        });
-        this.pointInst = p;
-        try{
-
-            p.properties.set({
-                linkOnStruct: context,//сылка на структуру, для обратной связи
-            });
-            if(!!properties) p.properties.set({
-                ...properties //сохраняем важные данные
-            });
-        
-            this.addEvents(events);
-        
-            this.mapIsnt.geoObjects.add(p);
-        }catch(e){
-            console.log('class TradePoint.DrawOnMap() : '+e.message)
-        }
-        return p;
-    }
     
-    //установка видимости метки
-    SetVisibleOnMap(vis){
-        try{
-            this.pointInst.options.set({ "visible": vis});
-        }catch(e){
-            console.log('class TradePoint.SetVisibleOnMap() : '+e.message)
-        }
-    }
 */
 }

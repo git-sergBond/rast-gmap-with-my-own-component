@@ -5,7 +5,7 @@ export default class collectionUsers {
     //
     public srcData :  any[] = [];//источник данных
     public _objData : UserPoint[] = [];// объекты точек
-    public outIdData : number[] = [1,2];//массив айдишников объектов, которых нужно отрисовать  списке
+    public outIdData : number[] = [];//массив айдишников объектов, которых нужно отрисовать  списке
     private _filterMatr : number[][] = [];//временный массив, в котором лежат показания каждого из фильтров
     //
     private map? : Map;//ссылка на карту к которой привязан маркер
@@ -140,21 +140,29 @@ export default class collectionUsers {
     }
     //фильтр по полу
     filterBy_male(male : boolean){
+        let {_filterMatr} = this;
+        _filterMatr[0] = [];
         this._objData.forEach((e : UserPoint) => {
             if(Boolean(e.male) != male){
                 e.setVisible(false);
+            }else{
+                _filterMatr[0].push(Number(e.userid))
             }
         });
         this.cluster!.repaint();
     }
     //фильтр по возрастц
     filterBy_age(ageLow : number, ageHigh : number = 200){
+        let {_filterMatr} = this;
+        _filterMatr[1] = [];
         const date_now : number = new Date(Date.now()).getFullYear();
         this._objData.forEach((e : UserPoint) => {
             const  birthDay = new Date(Date.parse(e.birthday as string)).getFullYear();
             const curAge = date_now - birthDay;
             if(ageLow > curAge || curAge > ageHigh ){
                 e.setVisible(false);
+            }else{
+                _filterMatr[1].push(Number(e.userid))
             }
         });
         this.cluster!.repaint();
@@ -168,6 +176,25 @@ export default class collectionUsers {
     filterBy_online(online : number){
         throw new Error("Метод collectionUsers.filterBy_online не реализован");
         this.cluster!.repaint();
+    }
+    filter_commit(){
+        let { _filterMatr } = this;
+        /*
+        if(_filterMatr.length > 1){
+            intersection
+        }*/
+    }
+    intersection(A: number[], B: number[])
+    {
+        var m = A.length, n = B.length, c = 0, C = [];
+        for (var i = 0; i < m; i++)
+        { 
+            var j = 0, k = 0;
+            while (B[j] !== A[ i ] && j < n) j++;
+            while (C[k] !== A[ i ] && k < c) k++;
+            if (j != n && k == c) C[c++] = A[ i ];
+        }
+        return C;
     }
     //Сортировка по определенным полям
     sortBy_male(male : boolean){

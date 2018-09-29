@@ -1,6 +1,7 @@
 <template>
   <div class="about">
     <div class="flex-collumns">
+      <button @click="test">123</button>
       <div class="side-collums">
         <div class="filters">
           <h3>Люди / Фильтры </h3>
@@ -37,6 +38,7 @@
           <div>!Онлайн</div>
           <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
+          <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
         <div class="item" v-for="p in cTradePoints" :key='p.pointid'>
           <p>{{p.name}}</p>
@@ -57,6 +59,7 @@ import UserPoint from '../clases/UserPoint'
 import Map from '../clases/Map'
 import Cluster from '../clases/Cluster'
 import collectionUsers from '../clases/collectionUsers'
+
 //import * as Logger from '@/clases/myLogger'
 
 export default Vue.extend({
@@ -71,7 +74,9 @@ export default Vue.extend({
       filterAgeCheckLow : 0,
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
-      filterMaleCheckMale : false
+      filterMaleCheckMale : false,
+      //test
+      filteredData : {UserPoints : []}
   }},
   async mounted(){
     console.log('mounted',_global_initMap)
@@ -130,9 +135,8 @@ export default Vue.extend({
       //
       
       this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
-      await this.$data.collUsr.getData();
-      this.$data.collUsr.drawData();
-     // collUsr.deletData();
+      await (this.collUsr! as collectionUsers).getData();
+      (this.collUsr! as collectionUsers).drawData();
       //
       /*
       this.$data.filteredData.TradePoint = [4,13];
@@ -142,10 +146,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    test(){
-      this.$data.filteredData.TradePoint = [4,13];
-      this.$data.filteredData.UserPoints = [9,142,143,148];
-    },
     clickOnTradePoint(){
       alert(1)
      // Logger.log(1)
@@ -155,12 +155,12 @@ export default Vue.extend({
     //  Logger.log(2)
     },
     clickOnAcceptUserFilter(){
-      this.$data.collUsr.filterClear();
+      (this.collUsr! as collectionUsers).filterClear();
       if(this.filterAgeCheck) {
-        this.$data.collUsr.filterBy_age(this.filterAgeCheckLow, this.filterAgeCheckHigh);
+        (this.collUsr! as collectionUsers).filterBy_age(this.filterAgeCheckLow, this.filterAgeCheckHigh);
       }
       if(this.filterMaleCheck) {
-        this.$data.collUsr.filterBy_male(this.filterMaleCheckMale);
+        (this.collUsr! as collectionUsers).filterBy_male(this.filterMaleCheckMale);
       }
     },
     clickOnClearUserFilter(){
@@ -170,40 +170,17 @@ export default Vue.extend({
       this.filterMaleCheck = false;
       this.filterMaleCheckMale = false;
       this.clickOnAcceptUserFilter();
+    },
+    clickOnDeleteUsers(){
+      (this.collUsr! as collectionUsers).deletData();
+    },
+    test(){
+      (this.filteredData.UserPoints as number[]) = [1232];
     }
   },
   watch: {
-    'filteredData.TradePoints': function (val) {
-      let res = <any> [];
-      try{
-        for(const id of val){
-          for(const p of this.$data.source.TradePoints){
-            if(p.pointid == id){
-              res.push(p);
-              break;
-            }
-          }
-        }
-      } catch (e) {
-        alert('1 '+e.message)
-      }
-      this.$data.cTradePoints = res;
-    },
-    'filteredData.UserPoints': function(val) {
-      let res : any[] = [];
-      try{
-        for(const id of val){
-          for(const p of this.$data.source.UserPoints){
-            if(p.pointid == id){
-              res.push(p);
-              break;
-            }
-          }
-        }
-      } catch (e) {
-        alert('2 ' + e.message)
-      }
-      this.$data.cUserPoints = res;
+    'filteredData.UserPoints' : function () {
+      alert(123)
     }
   }
 })

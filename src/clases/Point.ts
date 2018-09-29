@@ -56,9 +56,9 @@ export default class Point {
     //удалить или установить карту
     public setMap(mapOrNull : any){
         try{
-        (this._gm_markInst  as google.maps.Marker).setMap(mapOrNull);
+            (this._gm_markInst  as google.maps.Marker).setMap(mapOrNull);
         }catch(e){
-            alert('setMap()')
+            alert('Point.setMap()')
         }
     }
 

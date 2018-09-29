@@ -172,7 +172,7 @@ export default Vue.extend({
       this.clickOnAcceptUserFilter();
     },
     clickOnDeleteUsers(){
-      (this.collUsr! as collectionUsers).deletData();
+      (this.collUsr! as collectionUsers).deleteMarkers();
     },
     test(){
       (this.filteredData.UserPoints as number[]) = [1232];

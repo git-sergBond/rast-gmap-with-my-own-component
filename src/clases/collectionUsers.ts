@@ -104,10 +104,17 @@ export default class collectionUsers {
         }
         this.cluster = new Cluster(this._objData,this.map as Map);
     }
-    deletData(){
+    deletMarkersFromMap(){
         this._objData.forEach((e : UserPoint) => {
             e.setMap(null);
         });
+    }
+    deleteMarkersFromClusterer(){
+        this.cluster!.clearMarkers();
+    }
+    deleteMarkers(){
+        this.deletMarkersFromMap();
+        this.deleteMarkersFromClusterer();
     }
     async display(){
         await this.getData();

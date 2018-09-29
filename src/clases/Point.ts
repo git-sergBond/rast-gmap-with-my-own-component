@@ -53,6 +53,15 @@ export default class Point {
         return this._gm_markInst as google.maps.Marker;
     }
 
+    //удалить или установить карту
+    public setMap(mapOrNull : any){
+        try{
+        (this._gm_markInst  as google.maps.Marker).setMap(mapOrNull);
+        }catch(e){
+            alert('setMap()')
+        }
+    }
+
     //установка видимости метки
     public setVisible(vis : boolean){
         try{

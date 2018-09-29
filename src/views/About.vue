@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <button @click="test">test</button>
     <div class="flex-collumns">
       <div class="side-collums">
         <div class="filters">
@@ -22,10 +21,22 @@
       <div class="side-collums">
         <div class="filters">
           <h3>Услуги / Фильтры </h3>
-          <div>Возраст</div>
-          <div>Пол</div>
-          <div>Округ</div>
-          <div>Онлайн</div>
+          <div>
+            <input type="checkbox" v-model="filterAgeCheck">
+            <span>Возраст</span>
+            <input type="number" v-model="filterAgeCheckLow" size="3">
+            <span>/</span>
+            <input type="number" v-model="filterAgeCheckHigh" size="3">
+          </div>
+          <div>
+            <input type="checkbox" v-model="filterMaleCheck">
+            <span>Пол</span>
+            <input type="checkbox" v-model="filterMaleCheckMale">
+          </div>
+          <div>!Округ</div>
+          <div>!Онлайн</div>
+          <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
+          <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
         </div>
         <div class="item" v-for="p in cTradePoints" :key='p.pointid'>
           <p>{{p.name}}</p>
@@ -46,6 +57,7 @@ import UserPoint from '../clases/UserPoint'
 import Map from '../clases/Map'
 import Cluster from '../clases/Cluster'
 import collectionUsers from '../clases/collectionUsers'
+//import * as Logger from '@/clases/myLogger'
 
 export default Vue.extend({
   /*
@@ -54,22 +66,14 @@ export default Vue.extend({
   },*/
   data() { 
     return {
-      markClusters : {
-        TradePoints : [],
-        UserPoints : [],
-      },
-      source : {
-        TradePoints : [],
-        UserPoints : [],
-      },
-      filteredData : {
-        TradePoints :  [],
-        UserPoints : [9,142,143,148],
-      },
-      cUserPoints: [],
-      cTradePoints: []
+      collUsr : null,
+      filterAgeCheck : false,
+      filterAgeCheckLow : 0,
+      filterAgeCheckHigh:  200,
+      filterMaleCheck : false,
+      filterMaleCheckMale : false
   }},
-  mounted(){
+  async mounted(){
     console.log('mounted',_global_initMap)
     let map = new Map(this.$refs.ssgmap as Element, 55.452376, 37.372236, 8);
     //
@@ -114,7 +118,7 @@ export default Vue.extend({
     ]
      
     try{
-
+/*
       this.$data.source.TradePoints = [];
       for(let p of  testTradePoints){
         let e = new TradePoint(p,map);
@@ -122,14 +126,17 @@ export default Vue.extend({
         this.$data.source.TradePoints.push(e);
       }
       this.$data.markClusters.TradePoints = new Cluster(this.$data.source.TradePoints,map);
-    
+    */
       //
       
-      let coll = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
-      coll.display();
+      this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
+      await this.$data.collUsr.getData();
+      this.$data.collUsr.drawData();
+     // collUsr.deletData();
       //
+      /*
       this.$data.filteredData.TradePoint = [4,13];
-      this.$data.filteredData.UserPoints = [9,142,143,148];
+      this.$data.filteredData.UserPoints = [9,142,143,148];*/
     } catch (e) {
       alert('3 ' + e.message)
     }
@@ -141,9 +148,28 @@ export default Vue.extend({
     },
     clickOnTradePoint(){
       alert(1)
+     // Logger.log(1)
     },
     clickOnUserPoint(){
       alert(2)
+    //  Logger.log(2)
+    },
+    clickOnAcceptUserFilter(){
+      this.$data.collUsr.filterClear();
+      if(this.filterAgeCheck) {
+        this.$data.collUsr.filterBy_age(this.filterAgeCheckLow, this.filterAgeCheckHigh);
+      }
+      if(this.filterMaleCheck) {
+        this.$data.collUsr.filterBy_male(this.filterMaleCheckMale);
+      }
+    },
+    clickOnClearUserFilter(){
+      this.filterAgeCheck = false;
+      this.filterAgeCheckLow = 0;
+      this.filterAgeCheckHigh = 200;
+      this.filterMaleCheck = false;
+      this.filterMaleCheckMale = false;
+      this.clickOnAcceptUserFilter();
     }
   },
   watch: {

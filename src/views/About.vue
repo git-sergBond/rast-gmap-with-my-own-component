@@ -4,7 +4,7 @@
       <button @click="test">123</button>
       <div class="side-collums">
         <div class="filters">
-          <h3>Люди / Фильтры </h3>
+          <h3>Услуги / Фильтры </h3>
           <div>
             <P>Цена</p>
             <button>low</button><button>high</button>
@@ -21,7 +21,7 @@
       <div ref="ssgmap" id='ssgmap-id'></div>
       <div class="side-collums">
         <div class="filters">
-          <h3>Услуги / Фильтры </h3>
+          <h3>Люди / Фильтры </h3>
           <div>
             <input type="checkbox" v-model="filterAgeCheck">
             <span>Возраст</span>
@@ -40,8 +40,8 @@
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
-        <div class="item" v-for="p in cTradePoints" :key='p.pointid'>
-          <p>{{p.name}}</p>
+        <div class="item"  v-for="p in IdsUsers" :key='p'>
+          <p>{{p}}</p>
         </div>
       </div>
     </div>
@@ -69,12 +69,17 @@ export default Vue.extend({
   },*/
   data() { 
     return {
+
       collUsr : null,
+      IdsUsers : [],
+      Users : [],
+
       filterAgeCheck : false,
       filterAgeCheckLow : 0,
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
       filterMaleCheckMale : false,
+
       //test
       filteredData : {UserPoints : []}
   }},
@@ -136,7 +141,8 @@ export default Vue.extend({
       
       this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
       await (this.collUsr! as collectionUsers).getData();
-      (this.collUsr! as collectionUsers).drawData();
+      (this.collUsr! as collectionUsers).display();
+      this.mountCollUsr();
       //
       /*
       this.$data.filteredData.TradePoint = [4,13];
@@ -153,6 +159,10 @@ export default Vue.extend({
     clickOnUserPoint(){
       alert(2)
     //  Logger.log(2)
+    },
+    mountCollUsr(){
+      (this.Users as any) = (this.collUsr! as collectionUsers)._srcData;
+      (this.IdsUsers as any) = (this.collUsr! as collectionUsers).outIdData;
     },
     clickOnAcceptUserFilter(){
       (this.collUsr! as collectionUsers).filterClear();

@@ -17,9 +17,12 @@ export default class Cluster {
     clearMarkers(){
         try{
         this.clist.clearMarkers();
-        this.clist.repaint();
+        this.repaint();
         }catch(e){
             alert('Cluster.clearMarkers()'+e.message)
         }
+    }
+    repaint(){
+        this.clist.repaint();
     }
 }

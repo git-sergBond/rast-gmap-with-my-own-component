@@ -5,6 +5,8 @@ export default class collectionUsers {
     //
     public _srcData :  any[] = [];//источник данных
     public _objData : UserPoint[] = [];// объекты точек
+    public outIdData : number[] = [1,2];//массив айдишников объектов, которых нужно отрисовать  списке
+    private _filterMatr : number[][] = [];//временный массив, в котором лежат показания каждого из фильтров
     //
     private map? : Map;//ссылка на карту к которой привязан маркер
     private events : any[] = [];
@@ -119,12 +121,21 @@ export default class collectionUsers {
     async display(){
         await this.getData();
         this.drawData();
+        this.filterClear();
     }
     //очистить фильтрацию
     filterClear(){
-        this._objData.forEach((e : UserPoint) => {
-            e.setVisible(true);
-        });
+        try {
+            this._filterMatr = [];
+            let { outIdData } = this;
+            this._objData.forEach((e : UserPoint) => {
+                e.setVisible(true);
+                outIdData.push(Number(e.userid));
+            });
+            this.cluster!.repaint();
+        } catch ( e ) {
+            alert('collectionUsers.filterClear() '+e.message)
+        }
     }
     //фильтр по полу
     filterBy_male(male : boolean){
@@ -133,6 +144,7 @@ export default class collectionUsers {
                 e.setVisible(false);
             }
         });
+        this.cluster!.repaint();
     }
     //фильтр по возрастц
     filterBy_age(ageLow : number, ageHigh : number = 200){
@@ -144,14 +156,17 @@ export default class collectionUsers {
                 e.setVisible(false);
             }
         });
+        this.cluster!.repaint();
     }
     //Фильтр по округу
     filterBy_district(district : number){
         throw new Error("Метод collectionUsers.filterBy_district не реализован");
+        this.cluster!.repaint();
     }
     //Фильтр по наличию в online
     filterBy_online(online : number){
         throw new Error("Метод collectionUsers.filterBy_online не реализован");
+        this.cluster!.repaint();
     }
     //Сортировка по определенным полям
     sortBy_male(male : boolean){

@@ -3,7 +3,7 @@ import Map from '@/clases/Map';
 import Cluster from '@/clases/Cluster';
 export default class collectionUsers {
     //
-    public _srcData :  any[] = [];//источник данных
+    public srcData :  any[] = [];//источник данных
     public _objData : UserPoint[] = [];// объекты точек
     public outIdData : number[] = [1,2];//массив айдишников объектов, которых нужно отрисовать  списке
     private _filterMatr : number[][] = [];//временный массив, в котором лежат показания каждого из фильтров
@@ -18,7 +18,7 @@ export default class collectionUsers {
     }
     //запросить данные
     async getData(){
-        this._srcData = [
+        this.srcData = [
             {
                 "userid": 9,
                 "email": "sumkin@mail.ru",
@@ -99,7 +99,7 @@ export default class collectionUsers {
     //выыести на экран
     drawData(){
         this._objData = [];
-        for(let p of  this._srcData){
+        for(let p of  this.srcData){
             let e = new UserPoint(p,this.map as Map);
             e.addEvents(this.events)
             this._objData.push(e);
@@ -117,6 +117,7 @@ export default class collectionUsers {
     deleteMarkers(){
         this.deletMarkersFromMap();
         this.deleteMarkersFromClusterer();
+        this.outIdData = []
     }
     async display(){
         await this.getData();

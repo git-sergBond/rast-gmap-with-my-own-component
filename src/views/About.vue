@@ -161,7 +161,7 @@ export default Vue.extend({
     //  Logger.log(2)
     },
     mountCollUsr(){
-      (this.Users as any) = (this.collUsr! as collectionUsers)._srcData;
+      (this.Users as any) = (this.collUsr! as collectionUsers).srcData;
       (this.IdsUsers as any) = (this.collUsr! as collectionUsers).outIdData;
     },
     clickOnAcceptUserFilter(){
@@ -172,6 +172,7 @@ export default Vue.extend({
       if(this.filterMaleCheck) {
         (this.collUsr! as collectionUsers).filterBy_male(this.filterMaleCheckMale);
       }
+      this.mountCollUsr();
     },
     clickOnClearUserFilter(){
       this.filterAgeCheck = false;
@@ -180,9 +181,11 @@ export default Vue.extend({
       this.filterMaleCheck = false;
       this.filterMaleCheckMale = false;
       this.clickOnAcceptUserFilter();
+      this.mountCollUsr();
     },
     clickOnDeleteUsers(){
       (this.collUsr! as collectionUsers).deleteMarkers();
+      this.mountCollUsr();
     },
     test(){
       (this.filteredData.UserPoints as number[]) = [1232];

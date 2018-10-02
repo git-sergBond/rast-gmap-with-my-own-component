@@ -14,9 +14,9 @@
           <div><P>Рейтинг</p><button>low</button><button>high</button></div>
           <div><P>Категория</p></div>
         </div>
-        <div class="item" v-for="p in cUserPoints" :key='p.userid' >
+        <!--div class="item" v-for="p in cUserPoints" :key='p.userid' >
             <p>{{p.firstname}}</p>
-        </div>
+        </div-->
       </div>
       <div ref="ssgmap" id='ssgmap-id'></div>
       <div class="side-collums">
@@ -59,6 +59,7 @@ import UserPoint from '../clases/UserPoint'
 import Map from '../clases/Map'
 import Cluster from '../clases/Cluster'
 import collectionUsers from '../clases/collectionUsers'
+import { constants } from 'fs';
 
 //import * as Logger from '@/clases/myLogger'
 
@@ -84,9 +85,11 @@ export default Vue.extend({
       filteredData : {UserPoints : []}
   }},
   async mounted(){
+
     console.log('mounted',_global_initMap)
     let map = new Map(this.$refs.ssgmap as Element, 55.452376, 37.372236, 8);
     //
+    /*
     let testTradePoints : any[] = [
       {
                     "pointid": 4,
@@ -116,7 +119,7 @@ export default Vue.extend({
                     "email": null,
                     "usermanager": null,
                     "website": null,
-                    "address": "Белгород, лесопарк Сосновка",
+                    "address"testTradePoints: "Белгород, лесопарк Сосновка",
                     "deleted": false,
                     "deletedcascade": null,
                     "subjecttype": 0,
@@ -126,7 +129,7 @@ export default Vue.extend({
                     ]
                 }
     ]
-     
+     */
     try{
 /*
       this.$data.source.TradePoints = [];
@@ -153,10 +156,12 @@ export default Vue.extend({
   },
   methods: {
     clickOnTradePoint(){
-      alert(1)
+      console.log(1)
+      //alert(1)
      // Logger.log(1)
     },
     clickOnUserPoint(){
+      console.log(2)
       alert(2)
     //  Logger.log(2)
     },
@@ -172,6 +177,7 @@ export default Vue.extend({
       if(this.filterMaleCheck) {
         (this.collUsr! as collectionUsers).filterBy_male(this.filterMaleCheckMale);
       }
+      (this.collUsr! as collectionUsers).filter_commit();
       this.mountCollUsr();
     },
     clickOnClearUserFilter(){

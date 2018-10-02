@@ -129,6 +129,7 @@ export default class collectionUsers {
         try {
             this._filterMatr = [];
             let { outIdData } = this;
+            outIdData = [];
             this._objData.forEach((e : UserPoint) => {
                 e.setVisible(true);
                 outIdData.push(Number(e.userid));
@@ -159,6 +160,7 @@ export default class collectionUsers {
         this._objData.forEach((e : UserPoint) => {
             const  birthDay = new Date(Date.parse(e.birthday as string)).getFullYear();
             const curAge = date_now - birthDay;
+            console.log(curAge)
             if(ageLow > curAge || curAge > ageHigh ){
                 e.setVisible(false);
             }else{
@@ -183,6 +185,23 @@ export default class collectionUsers {
         if(_filterMatr.length > 1){
             intersection
         }*/
+        let arrMatr = this._filterMatr;
+        let resMatr : number[] = [];
+        console.table(arrMatr);
+        for (let i = 0; i < arrMatr.length-1; i++) {
+            let A = arrMatr[i];
+            let B = arrMatr[i+1];
+            B = this.intersection(A,B);
+        }
+        resMatr = arrMatr[arrMatr.length-1];
+        console.table(resMatr)
+        //resMatr.sort((a,b)=> a - b);
+        for (let i = 0; i < resMatr.length; i++) {
+            for (let j = 0; j < resMatr.length; j++) {
+                if(i != j && resMatr[i] == resMatr[j]) resMatr[j] = -1;
+            }
+        }
+        resMatr = resMatr.filter(el=>el!=-1);
     }
     intersection(A: number[], B: number[])
     {

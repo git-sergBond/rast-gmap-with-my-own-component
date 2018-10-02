@@ -1,5 +1,4 @@
-export default {
-  /*
+export default class myLogger{
     constructor(private name: string) {}
   
     debug(msg?: any, ...args: any[]) {
@@ -9,8 +8,4 @@ export default {
     log(msg?: any, ...args: any[]) {
       console.log(msg, ...args)
     }
-    */
-   log(a){
-     console.log(123)
-   }
   }

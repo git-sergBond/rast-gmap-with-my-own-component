@@ -23,6 +23,9 @@ export default class UserPoint extends Point{
     pathtophoto?: string // "images/users/d4dd0c47.jpg",
     status?: string
 
+    // вычесленные свойства
+    age: number = 0;//возратс
+
     constructor(sourceUser : any, _gm_mapInst : Map){
         super(Number(sourceUser.latitude),Number(sourceUser.longitude),_gm_mapInst.getInst());
         try{
@@ -53,6 +56,15 @@ export default class UserPoint extends Point{
             this.birthday = birthday;
             this.pathtophoto = pathtophoto;
             this.status = status;
+
+            //вычисление возраста
+            const  birthDay = new Date(Date.parse(this.birthday as string)).getFullYear();
+            const date_now : number = new Date(Date.now()).getFullYear();
+            this.age = date_now - birthDay;
+            console.log('date now',date_now);
+            console.log('birthDay', birthDay, ' - ', 'curAge', this.age);
+            console.log(this.age);
+            console.log('---')
 
             if(Boolean(male)){
                 this.setIconColor(Point.yelow)

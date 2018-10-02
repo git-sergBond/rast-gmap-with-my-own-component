@@ -2,15 +2,14 @@ import UserPoint from '@/clases/UserPoint';
 import Map from '@/clases/Map';
 import Cluster from '@/clases/Cluster';
 export default class collectionUsers {
-    //
-    public srcData :  any[] = [];//источник данных
-    public _objData : UserPoint[] = [];// объекты точек
-    public outIdData : number[] = [];//массив айдишников объектов, которых нужно отрисовать  списке
-    private _filterMatr : number[][] = [];//временный массив, в котором лежат показания каждого из фильтров
-    //
+    //работа с метками
+    public srcData : any[] = [];//источник данных, из сервера в виде спарсенного json
+    public objData : UserPoint[] = [];// объекты точек, для работы с картой
+    public outData : UserPoint[] = [];// данные с сортироввками и фильтрами
+    //работа с ГУИ
     private map? : Map;//ссылка на карту к которой привязан маркер
-    private events : any[] = [];
-    private cluster? : Cluster;
+    private events : any[] = [];//события для точек
+    private cluster? : Cluster;// объект кластера
     //
     constructor(map : Map, events : any[]){
         this.map = map;
@@ -98,126 +97,129 @@ export default class collectionUsers {
     }
     //выыести на экран
     drawData(){
-        this._objData = [];
+        this.objData = [];
         for(let p of  this.srcData){
             let e = new UserPoint(p,this.map as Map);
             e.addEvents(this.events)
-            this._objData.push(e);
+            this.objData.push(e);
         }
-        this.cluster = new Cluster(this._objData,this.map as Map);
+        this.cluster = new Cluster(this.objData,this.map as Map);
     }
+    /* удаление точек */
+    //удалить точки с карты
     deletMarkersFromMap(){
-        this._objData.forEach((e : UserPoint) => {
+        this.objData.forEach((e : UserPoint) => {
             e.setMap(null);
         });
     }
+    //удалить точки из кластера
     deleteMarkersFromClusterer(){
         this.cluster!.clearMarkers();
     }
+    //удалить точки и почистить данные
     deleteMarkers(){
         this.deletMarkersFromMap();
         this.deleteMarkersFromClusterer();
-        this.outIdData = []
+        this.outData = [];
     }
+    /* отобразить (обновить даные) */
     async display(){
         await this.getData();
         this.drawData();
         this.filterClear();
     }
+
+    /* ФИЛЬТРАЦИЯ и СОРТИРОВКА*/
+    /*
+    <<<параметры>>>
+    */
+    //сортировка 
+    public sort_by : string = "not";
+    //фильтр по полу
+    public filter_male_active : boolean = false;
+    public filter_male_value : boolean = false;
+    //фильтр по возрастц
+    public filter_age_active : boolean = false;
+    public filter_age_from : number = 0;
+    public filter_age_to : number = 500;
+    //Фильтр по округу
+    //...
+    //Фильтр по наличию в online
+    //...
+    /*
+    <<<Функции>>>
+    */
     //очистить фильтрацию
     filterClear(){
         try {
-            this._filterMatr = [];
-            let { outIdData } = this;
-            outIdData = [];
-            this._objData.forEach((e : UserPoint) => {
+            this.outData = this.objData;
+            //сортировка 
+            this.sort_by = "not"
+            //фильтр по полу
+            this.filter_male_active = false;
+            this.filter_male_value = false;
+            //фильтр по возрастц
+            this.filter_age_active = false;
+            this.filter_age_from = 0;
+            this.filter_age_to = 500;
+            //Фильтр по округу
+            //---
+            //Фильтр по наличию в online
+            //---
+            this.objData.forEach((e : UserPoint) => {
                 e.setVisible(true);
-                outIdData.push(Number(e.userid));
             });
             this.cluster!.repaint();
         } catch ( e ) {
             alert('collectionUsers.filterClear() '+e.message)
         }
     }
-    //фильтр по полу
-    filterBy_male(male : boolean){
-        let {_filterMatr} = this;
-        _filterMatr[0] = [];
-        this._objData.forEach((e : UserPoint) => {
-            if(Boolean(e.male) != male){
-                e.setVisible(false);
-            }else{
-                _filterMatr[0].push(Number(e.userid))
-            }
-        });
-        this.cluster!.repaint();
-    }
-    //фильтр по возрастц
-    filterBy_age(ageLow : number, ageHigh : number = 200){
-        let {_filterMatr} = this;
-        _filterMatr[1] = [];
-        const date_now : number = new Date(Date.now()).getFullYear();
-        this._objData.forEach((e : UserPoint) => {
-            const  birthDay = new Date(Date.parse(e.birthday as string)).getFullYear();
-            const curAge = date_now - birthDay;
-            console.log(curAge)
-            if(ageLow > curAge || curAge > ageHigh ){
-                e.setVisible(false);
-            }else{
-                _filterMatr[1].push(Number(e.userid))
-            }
-        });
-        this.cluster!.repaint();
-    }
-    //Фильтр по округу
-    filterBy_district(district : number){
-        throw new Error("Метод collectionUsers.filterBy_district не реализован");
-        this.cluster!.repaint();
-    }
-    //Фильтр по наличию в online
-    filterBy_online(online : number){
-        throw new Error("Метод collectionUsers.filterBy_online не реализован");
-        this.cluster!.repaint();
-    }
-    filter_commit(){
-        let { _filterMatr } = this;
-        /*
-        if(_filterMatr.length > 1){
-            intersection
-        }*/
-        let arrMatr = this._filterMatr;
-        let resMatr : number[] = [];
-        console.table(arrMatr);
-        for (let i = 0; i < arrMatr.length-1; i++) {
-            let A = arrMatr[i];
-            let B = arrMatr[i+1];
-            B = this.intersection(A,B);
-        }
-        resMatr = arrMatr[arrMatr.length-1];
-        console.table(resMatr)
-        //resMatr.sort((a,b)=> a - b);
-        for (let i = 0; i < resMatr.length; i++) {
-            for (let j = 0; j < resMatr.length; j++) {
-                if(i != j && resMatr[i] == resMatr[j]) resMatr[j] = -1;
-            }
-        }
-        resMatr = resMatr.filter(el=>el!=-1);
-    }
-    intersection(A: number[], B: number[])
-    {
-        var m = A.length, n = B.length, c = 0, C = [];
-        for (var i = 0; i < m; i++)
-        { 
-            var j = 0, k = 0;
-            while (B[j] !== A[ i ] && j < n) j++;
-            while (C[k] !== A[ i ] && k < c) k++;
-            if (j != n && k == c) C[c++] = A[ i ];
-        }
-        return C;
-    }
-    //Сортировка по определенным полям
-    sortBy_male(male : boolean){
-        //сортировака
-    }
+    //фильтрация и сортировка
+    filterAndSort_commit(){
+        let context = this;
 
+        try{
+
+        this.outData = [];
+        
+        //фильтрация
+        this.objData.forEach((e : UserPoint) => {
+            
+            let calcVisible = true;
+            if(context.filter_age_active) if(context.filter_age_from > e.age || e.age > context.filter_age_to) calcVisible = false;
+            if(context.filter_male_active) if(Boolean(e.male) != context.filter_male_value) calcVisible = false;
+            if(calcVisible) {
+                e.setVisible(false);
+                context.outData.push(e)
+            }else{
+                e.setVisible(true);
+            }
+        });
+        /*
+        //сортировка
+        this.objData.sort((A : UserPoint, B : UserPoint) => {
+            let res = -1;
+            switch(context.sort_by){
+                case "male":
+                    if(Number(Boolean(A.male)) > Number(Boolean(B.male))) if(context.filter_male_value) res = 1;
+                    break;
+                case "age":
+                    if()
+                    res = A.age - B.age;
+                    break;
+                case "not":
+                    console.log('not filter');
+                    break;
+                default:
+                    console.log("filterAndSort_commit() такого фильтра нет");
+            }
+            return res;
+        });
+*/
+        this.cluster!.repaint();
+        
+    }catch(e){
+            console.log("collectionUsers.filterAndSort_commit()",e);
+    }
+    }
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="about">
     <div class="flex-collumns">
-      <button @click="test">123</button>
       <div class="side-collums">
         <div class="filters">
           <h3>Услуги / Фильтры </h3>
@@ -40,8 +39,8 @@
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
-        <div class="item"  v-for="p in IdsUsers" :key='p'>
-          <p>{{p}}</p>
+        <div class="item"  v-for="p in outUsers" :key='p'>
+          <p>{{p.userid}}, {{firstname}}, {{lastname}}</p>
         </div>
       </div>
     </div>
@@ -72,17 +71,13 @@ export default Vue.extend({
     return {
 
       collUsr : null,
-      IdsUsers : [],
-      Users : [],
+      outUsers : [],//объекты появляющиеся в списке
 
       filterAgeCheck : false,
       filterAgeCheckLow : 0,
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
       filterMaleCheckMale : false,
-
-      //test
-      filteredData : {UserPoints : []}
   }},
   async mounted(){
 
@@ -166,18 +161,16 @@ export default Vue.extend({
     //  Logger.log(2)
     },
     mountCollUsr(){
-      (this.Users as any) = (this.collUsr! as collectionUsers).srcData;
-      (this.IdsUsers as any) = (this.collUsr! as collectionUsers).outIdData;
+      (this.outUsers as any) = (this.collUsr! as collectionUsers).outData;
     },
     clickOnAcceptUserFilter(){
-      (this.collUsr! as collectionUsers).filterClear();
-      if(this.filterAgeCheck) {
-        (this.collUsr! as collectionUsers).filterBy_age(this.filterAgeCheckLow, this.filterAgeCheckHigh);
-      }
-      if(this.filterMaleCheck) {
-        (this.collUsr! as collectionUsers).filterBy_male(this.filterMaleCheckMale);
-      }
-      (this.collUsr! as collectionUsers).filter_commit();
+      (this.collUsr! as collectionUsers).filter_male_active = this.filterMaleCheck;
+      (this.collUsr! as collectionUsers).filter_male_value = this.filterMaleCheckMale;
+      
+      (this.collUsr! as collectionUsers).filter_age_active = this.filterAgeCheck;
+      (this.collUsr! as collectionUsers).filter_age_from = this.filterAgeCheckLow;
+      (this.collUsr! as collectionUsers).filter_age_to = this.filterAgeCheckHigh;
+      (this.collUsr! as collectionUsers).filterAndSort_commit();
       this.mountCollUsr();
     },
     clickOnClearUserFilter(){
@@ -193,14 +186,6 @@ export default Vue.extend({
       (this.collUsr! as collectionUsers).deleteMarkers();
       this.mountCollUsr();
     },
-    test(){
-      (this.filteredData.UserPoints as number[]) = [1232];
-    }
-  },
-  watch: {
-    'filteredData.UserPoints' : function () {
-      alert(123)
-    }
   }
 })
 </script>

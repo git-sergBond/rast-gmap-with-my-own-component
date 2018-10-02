@@ -40,7 +40,7 @@
           <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
         <div class="item"  v-for="p in outUsers" :key='p'>
-          <p>{{p.userid}}, {{firstname}}, {{lastname}}</p>
+          <p>{{p.userid}}, {{p.firstname}}, {{p.lastname}}</p>
         </div>
       </div>
     </div>

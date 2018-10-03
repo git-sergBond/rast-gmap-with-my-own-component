@@ -39,7 +39,7 @@
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
-        <div class="item"  v-for="p in outUsers" :key='p'>
+        <div class="item"  v-for="p in outUsers" :key='p.userid'>
           <p>{{p.userid}}, {{p.firstname}}, {{p.lastname}}</p>
         </div>
       </div>

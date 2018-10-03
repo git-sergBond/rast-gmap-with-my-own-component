@@ -27,7 +27,7 @@ export default class UserPoint extends Point{
     age: number = 0;//возратс
 
     constructor(sourceUser : any, _gm_mapInst : Map){
-        super(Number(sourceUser.latitude),Number(sourceUser.longitude),_gm_mapInst.getInst());
+        super(Number(sourceUser.latitude), Number(sourceUser.longitude),_gm_mapInst.getInst());
         try{
 
             //данные принимаемые с сервера
@@ -58,13 +58,12 @@ export default class UserPoint extends Point{
             this.status = status;
 
             //вычисление возраста
-            const  birthDay = new Date(Date.parse(this.birthday as string)).getFullYear();
-            const date_now : number = new Date(Date.now().valueOf()).getFullYear();
-            this.age = date_now - birthDay;
-            console.log('date now',date_now);
-            console.log('birthDay', birthDay, ' - ', 'curAge', this.age);
-            console.log(this.age);
-            console.log('---')
+            this.age = 0;
+            if(!!this.birthday){
+                const  birthDay = new Date((this.birthday as string).split(' ')[0]).getFullYear();
+                const date_now : number = new Date(Date.now().valueOf()).getFullYear();
+                this.age = date_now - birthDay;
+            }
 
             if(Boolean(male)){
                 this.setIconColor(Point.yelow)

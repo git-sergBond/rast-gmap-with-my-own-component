@@ -239,11 +239,11 @@ export default class collectionServices {
     }
     //фильтрация и сортировка
     filterAndSort_commit(){
-        /*
+       
         let context = this;
 
         try{
-
+ /*
         this.outData = [];
         
         //фильтрация
@@ -259,31 +259,22 @@ export default class collectionServices {
                 e.setVisible(true);
             }
         });*/
-        /*
+    
         //сортировка
-        this.objData.sort((A : UserPoint, B : UserPoint) => {
+        this.outData = this.outData.sort((A : Service, B : Service) => {
             let res = -1;
-            switch(context.sort_by){
-                case "male":
-                    if(Number(Boolean(A.male)) > Number(Boolean(B.male))) if(context.filter_male_value) res = 1;
-                    break;
-                case "age":
-                    if()
-                    res = A.age - B.age;
-                    break;
-                case "not":
-                    console.log('not filter');
-                    break;
-                default:
-                    console.log("filterAndSort_commit() такого фильтра нет");
+            if(this.sort_dir){
+                if(A.rating > B.rating) res = 1;
+            }else{
+                if(A.rating < B.rating) res = 1;
             }
             return res;
         });
-*//*
+
         this.cluster!.repaint();
         
     }catch(e){
             console.log("collectionUsers.filterAndSort_commit()",e);
-    }*/
+    }
     }
 }

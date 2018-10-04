@@ -176,7 +176,7 @@ export default Vue.extend({
       this.filter_price_active = false;
       this.filter_price_from = (this.collServ! as collectionServices).maxPrice;
       this.filter_price_to = (this.collServ! as collectionServices).minPrice;
-      (this.collServ! as collectionUsers).filterClear();
+      (this.collServ! as collectionServices).filterClear();
       this.updateServices();
     },
     //Удалить точки

@@ -185,10 +185,10 @@ export default class collectionUsers {
             if(context.filter_age_active) if(context.filter_age_from > e.age || e.age > context.filter_age_to) calcVisible = false;
             if(context.filter_male_active) if(Boolean(e.male) != context.filter_male_value) calcVisible = false;
             if(calcVisible) {
-                e.setVisible(false);
+                e.setVisible(true);
                 context.outData.push(e)
             }else{
-                e.setVisible(true);
+                e.setVisible(false);
             }
         });
         this.cluster!.repaint();

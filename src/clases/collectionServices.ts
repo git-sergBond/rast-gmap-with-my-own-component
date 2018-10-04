@@ -138,7 +138,7 @@ export default class collectionServices {
                         "birthday":"1994-01-23",
                         "male":1,
                         "address":"улица Волоколамская и еще некоторые",
-                        "about":"Ну о себе можно много чего рассказать, поэтому я не стану этого делать. Ну наверно, не буду... Я ещё подумаю.","status":null,"ratingexecutor":"5","ratingclient":"5","pathtophoto":"images\/users\/6_2.jpg"
+                        "about":"Ну о себе можно много чего рассказать, поэтому я не стану этого делать. Ну наверно, не буду... Я ещё подумаю.","status":null,"ratingexecutor":"4","ratingclient":"5","pathtophoto":"images\/users\/6_2.jpg"
                     },
                     "categories":[
                         {"categoryid":17,"categoryname":"Грузчик","parentid":null,"description":"Ну  так все ясно","img":null},
@@ -243,31 +243,32 @@ export default class collectionServices {
         let context = this;
 
         try{
- /*
+ 
         this.outData = [];
         
         //фильтрация
-        this.objData.forEach((e : UserPoint) => {
+        this.objData.forEach((e : Service) => {
             
             let calcVisible = true;
-            if(context.filter_age_active) if(context.filter_age_from > e.age || e.age > context.filter_age_to) calcVisible = false;
-            if(context.filter_male_active) if(Boolean(e.male) != context.filter_male_value) calcVisible = false;
+            if(context.filter_price_active) if(context.filter_price_from < e.pricemin && e.pricemax < context.filter_price_to) calcVisible = false;
             if(calcVisible) {
-                e.setVisible(false);
+                e.setVisiblePoints(true);
                 context.outData.push(e)
             }else{
-                e.setVisible(true);
+                e.setVisiblePoints(false);
             }
-        });*/
+        });
     
         //сортировка
         this.outData = this.outData.sort((A : Service, B : Service) => {
             let res = -1;
-            if(this.sort_dir){
+            if(context.sort_dir){
                 if(A.rating > B.rating) res = 1;
             }else{
                 if(A.rating < B.rating) res = 1;
             }
+            //if(A.rating < B.rating) res = 1;
+            //else res = -1;
             return res;
         });
 

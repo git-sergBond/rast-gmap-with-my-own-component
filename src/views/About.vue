@@ -99,14 +99,19 @@ export default Vue.extend({
       
   }},
   async mounted(){
-
+    let context = this;
     console.log('mounted',_global_initMap)
     let map = new Map(this.$refs.ssgmap as Element, 55.452376, 37.372236, 8);
     //
     try{
       this.$data.collServ = new collectionServices(map,[{type:'click',event:this.clickOnUserPoint}]);
+      
       (this.collServ! as collectionUsers).display();
-      setTimeout(this.updateServices,0);
+      setTimeout(()=>{
+        context.updateServices();
+        context.filter_price_from = (context.collServ! as collectionServices).minPrice;
+        context.filter_price_to = (context.collServ! as collectionServices).maxPrice;
+        },0);
 
       this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
       (this.collUsr! as collectionUsers).display();
@@ -129,8 +134,7 @@ export default Vue.extend({
     },
     updateServices(){//услуга
       (this.outServices as Service[]) = (this.collServ! as collectionServices).outData;
-      this.filter_price_from = (this.collServ! as collectionServices).minPrice;
-      this.filter_price_to = (this.collServ! as collectionServices).maxPrice;
+      
     },
     //применить фильтры
     clickOnAcceptUserFilter(){//к людям
@@ -154,7 +158,7 @@ export default Vue.extend({
       (this.collServ! as collectionServices).filter_price_active = this.filter_price_active;
       (this.collServ! as collectionServices).filter_price_from = this.filter_price_from;
       (this.collServ! as collectionServices).filter_price_to = this.filter_price_to;
-
+      (this.collServ! as collectionServices).filterAndSort_commit();
       this.updateServices();
     },
     //Очистить фильтры

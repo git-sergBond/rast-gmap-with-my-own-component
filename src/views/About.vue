@@ -5,17 +5,20 @@
         <div class="filters">
           <h3>Услуги / Фильтры </h3>
           <div>
-            <P>Цена</p>
-            <button>low</button><button>high</button>
+            <input type="checkbox" v-model="filterAgeCheck">
+            <P>Цена(ф)</p>
             <p>от</p><input type="text" size="3">
             <p>до</p><input type="text" size=3>
           </div>
-          <div><P>Рейтинг</p><button>low</button><button>high</button></div>
-          <div><P>Категория</p></div>
+          <div><P>Рейтинг(с)</p><button>low</button><button>high</button></div>
+          <div><input type="checkbox" v-model="filterAgeCheck"><P>Категория(ф)</p></div>
+          <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
+          <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
+          <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
-        <!--div class="item" v-for="p in cUserPoints" :key='p.userid' >
-            <p>{{p.firstname}}</p>
-        </div-->
+        <div class="item" v-for="p in outServices" :key='p.serviceid'>
+          <p>{{p.serviceid}}, {{p.name}}, {{p.description}},</p>
+        </div>
       </div>
       <div ref="ssgmap" id='ssgmap-id'></div>
       <div class="side-collums">
@@ -33,8 +36,8 @@
             <span>Пол</span>
             <input type="checkbox" v-model="filterMaleCheckMale">
           </div>
-          <div>!Округ</div>
-          <div>!Онлайн</div>
+          <div>!Округ(ф)</div>
+          <div>!Онлайн(с)</div>
           <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteUsers">Удалить точки</button>
@@ -70,17 +73,20 @@ export default Vue.extend({
   },*/
   data() { 
     return {
-
+      //пользователи
       collUsr : null,
       outUsers: [],
-
+      //фильтры пользаков
       filterAgeCheck : false,
       filterAgeCheckLow : 0,
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
       filterMaleCheckMale : false,
-
+      //услуги
       collServ : null,
+      outServices : []
+      //фильтры услуг
+
       
   }},
   async mounted(){
@@ -91,10 +97,11 @@ export default Vue.extend({
     try{
       this.$data.collServ = new collectionServices(map,[{type:'click',event:this.clickOnUserPoint}]);
       (this.collServ! as collectionUsers).display();
-      
+      setTimeout(this.updateServices,0);
+
       this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
       (this.collUsr! as collectionUsers).display();
-      setTimeout(this.updateUsers,0)
+      setTimeout(this.updateUsers,0);
     } catch (e) {
       alert('3 ' + e.message)
     }
@@ -108,7 +115,10 @@ export default Vue.extend({
     },
     updateUsers(){
       (this.outUsers as UserPoint[]) = (this.collUsr! as collectionUsers).outData;
-   },
+    },
+    updateServices(){
+      (this.outServices as UserPoint[]) = (this.collServ! as collectionUsers).outData;
+    },
     clickOnAcceptUserFilter(){
       (this.collUsr! as collectionUsers).filter_male_active = this.filterMaleCheck;
       (this.collUsr! as collectionUsers).filter_male_value = this.filterMaleCheckMale;

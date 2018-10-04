@@ -105,6 +105,9 @@ export default class collectionServices {
     async display(){
         await this.getData();
         this.drawData();
-       // this.filterClear();
+        this.filterClear();
+    }
+    filterClear(){
+        this.outData = this.objData;
     }
 }

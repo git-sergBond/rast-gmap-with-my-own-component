@@ -39,7 +39,7 @@
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteUsers">Удалить точки</button>
         </div>
-        <div class="item"  v-for="p in outUsers" :key='p.userid'>
+        <div class="item" v-for="p in outUsers" :key='p.userid'>
           <p>{{p.userid}}, {{p.firstname}}, {{p.lastname}}</p>
         </div>
       </div>
@@ -58,9 +58,10 @@ import UserPoint from '../clases/UserPoint'
 import Map from '../clases/Map'
 import Cluster from '../clases/Cluster'
 import collectionUsers from '../clases/collectionUsers'
-import { constants } from 'fs';
+import collectionServices from '../clases/collectionServices'
 
-//import * as Logger from '@/clases/myLogger'
+import { constants } from 'fs';
+import { setTimeout } from 'timers';
 
 export default Vue.extend({
   /*
@@ -71,80 +72,29 @@ export default Vue.extend({
     return {
 
       collUsr : null,
-      outUsers : [],//объекты появляющиеся в списке
+      outUsers: [],
 
       filterAgeCheck : false,
       filterAgeCheckLow : 0,
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
       filterMaleCheckMale : false,
+
+      collServ : null,
+      
   }},
   async mounted(){
 
     console.log('mounted',_global_initMap)
     let map = new Map(this.$refs.ssgmap as Element, 55.452376, 37.372236, 8);
     //
-    /*
-    let testTradePoints : any[] = [
-      {
-                    "pointid": 4,
-                    "name": "Лига Белошвеек",
-                    "longitude": 36.58035063374,
-                    "latitude": 50.568459640885,
-                    "fax": null,
-                    "subjectid": 6,
-                    "time": null,
-                    "email": "beloshi@mail.ru",
-                    "usermanager": null,
-                    "website": "http://beloshi",
-                    "address": null,
-                    "deleted": false,
-                    "deletedcascade": false,
-                    "subjecttype": 0,
-                    "phones": []
-                },
-                {
-                    "pointid": 13,
-                    "name": "Большая точка",
-                    "longitude": 36.646965560625,
-                    "latitude": 50.551173779243,
-                    "fax": null,
-                    "subjectid": 6,
-                    "time": null,
-                    "email": null,
-                    "usermanager": null,
-                    "website": null,
-                    "address"testTradePoints: "Белгород, лесопарк Сосновка",
-                    "deleted": false,
-                    "deletedcascade": null,
-                    "subjecttype": 0,
-                    "phones": [
-                        "+7 948 843-34-43",
-                        "+7 948 345-34-34"
-                    ]
-                }
-    ]
-     */
     try{
-/*
-      this.$data.source.TradePoints = [];
-      for(let p of  testTradePoints){
-        let e = new TradePoint(p,map);
-        e.addEvents([{type:'click',event:this.clickOnTradePoint}])
-        this.$data.source.TradePoints.push(e);
-      }
-      this.$data.markClusters.TradePoints = new Cluster(this.$data.source.TradePoints,map);
-    */
-      //
+      this.$data.collServ = new collectionServices(map,[{type:'click',event:this.clickOnUserPoint}]);
+      (this.collServ! as collectionUsers).display();
       
       this.$data.collUsr = new collectionUsers(map,[{type:'click',event:this.clickOnUserPoint}]);
-      await (this.collUsr! as collectionUsers).getData();
       (this.collUsr! as collectionUsers).display();
-      this.mountCollUsr();
-      //
-      /*
-      this.$data.filteredData.TradePoint = [4,13];
-      this.$data.filteredData.UserPoints = [9,142,143,148];*/
+      setTimeout(this.updateUsers,0)
     } catch (e) {
       alert('3 ' + e.message)
     }
@@ -152,26 +102,22 @@ export default Vue.extend({
   methods: {
     clickOnTradePoint(){
       console.log(1)
-      //alert(1)
-     // Logger.log(1)
     },
     clickOnUserPoint(){
       console.log(2)
-      alert(2)
-    //  Logger.log(2)
     },
-    mountCollUsr(){
-      (this.outUsers as any) = (this.collUsr! as collectionUsers).outData;
-    },
+    updateUsers(){
+      (this.outUsers as UserPoint[]) = (this.collUsr! as collectionUsers).outData;
+   },
     clickOnAcceptUserFilter(){
       (this.collUsr! as collectionUsers).filter_male_active = this.filterMaleCheck;
       (this.collUsr! as collectionUsers).filter_male_value = this.filterMaleCheckMale;
-      
+    
       (this.collUsr! as collectionUsers).filter_age_active = this.filterAgeCheck;
       (this.collUsr! as collectionUsers).filter_age_from = this.filterAgeCheckLow;
       (this.collUsr! as collectionUsers).filter_age_to = this.filterAgeCheckHigh;
       (this.collUsr! as collectionUsers).filterAndSort_commit();
-      this.mountCollUsr();
+      this.updateUsers();
     },
     clickOnClearUserFilter(){
       this.filterAgeCheck = false;
@@ -180,12 +126,13 @@ export default Vue.extend({
       this.filterMaleCheck = false;
       this.filterMaleCheckMale = false;
       this.clickOnAcceptUserFilter();
-      this.mountCollUsr();
+      this.updateUsers();
     },
     clickOnDeleteUsers(){
       (this.collUsr! as collectionUsers).deleteMarkers();
-      this.mountCollUsr();
+      this.updateUsers();
     },
+
   }
 })
 </script>

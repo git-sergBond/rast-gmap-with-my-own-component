@@ -50,6 +50,18 @@ export default class collectionServices {
                         "usermanager":null,
                         "website":null,
                         "address":"Белгород, Соборная площадь"
+                    },
+                    {
+                        "pointid":17,
+                        "name":"назовите метку",
+                        "longitude":"37.587223",
+                        "latitude":"50.59566",
+                        "fax":null,
+                        "time":null,
+                        "email":null,
+                        "usermanager":null,
+                        "website":null,
+                        "address":"Белгород, Соборная площадь"
                     }
                 ],
                 "userinfo":{
@@ -72,23 +84,89 @@ export default class collectionServices {
                     {"imageid":null,"serviceid":39,"imagepath":"\/images\/no_image.jpg"}
                 ],
                 "ratingcount":0}, 
+                {
+                    "service": {
+                        "serviceid":39,
+                        "subjectid":6,
+                        "description":
+                        "блаблабла\r\r\n\rВидео: ",
+                        "pricemin":321,
+                        "pricemax":12312,
+                        "deleted":false,
+                        "subjecttype":0,
+                        "deletedcascade":false,
+                        "datepublication":
+                        "2018-08-09T21:07:55+00:00",
+                        "regionid":1,
+                        "name":"бла-бла",
+                        "numberofdisplay":0,
+                        "rating":5
+                    },
+                    "points":[
+                        {
+                            "pointid":18,
+                            "name":"назовите метку",
+                            "longitude":"36.587223",
+                            "latitude":"49.59566",
+                            "fax":null,
+                            "time":null,
+                            "email":null,
+                            "usermanager":null,
+                            "website":null,
+                            "address":"Белгород, Соборная площадь"
+                        },
+                        {
+                            "pointid":19,
+                            "name":"назовите метку",
+                            "longitude":"37.587223",
+                            "latitude":"51.59566",
+                            "fax":null,
+                            "time":null,
+                            "email":null,
+                            "usermanager":null,
+                            "website":null,
+                            "address":"Белгород, Соборная площадь"
+                        }
+                    ],
+                    "userinfo":{
+                        "userid":6,
+                        "firstname":"Алексей",
+                        "lastname":"Арраков",
+                        "patronymic":"",
+                        "birthday":"1994-01-23",
+                        "male":1,
+                        "address":"улица Волоколамская и еще некоторые",
+                        "about":"Ну о себе можно много чего рассказать, поэтому я не стану этого делать. Ну наверно, не буду... Я ещё подумаю.","status":null,"ratingexecutor":"5","ratingclient":"5","pathtophoto":"images\/users\/6_2.jpg"
+                    },
+                    "categories":[
+                        {"categoryid":17,"categoryname":"Грузчик","parentid":null,"description":"Ну  так все ясно","img":null},
+                        {"categoryid":14,"categoryname":"Мобильная разработка","parentid":20,"description":"Создание мобильных приложений","img":null},
+                        {"categoryid":11,"categoryname":"Ремонт и строительство","parentid":null,"description":"Ремонт всякой всячины и строительство другой всячины","img":null},
+                        {"categoryid":18,"categoryname":"Организация мероприятий","parentid":15,"description":"Удивительно, но \"ехха\" эта крайне неблагодарная отрасль связана с развлечениями.","img":null}
+                    ],
+                    "images":[
+                        {"imageid":null,"serviceid":39,"imagepath":"\/images\/no_image.jpg"}
+                    ],
+                    "ratingcount":0}, 
             ]
     }
     //выыести на экран
     drawData(){
-        this.objData = []
+        this.objData = [];
+        this.cluster = new Cluster([],this.map as Map);
         for(let srcObj of this.srcData){
             let servObj = new Service(srcObj,this.map!,this.events);
+            for(let p of servObj.points){
+                this.cluster.addMark(p);
+            }
             this.objData.push(servObj);
         }
-
-        //this.cluster = new Cluster(this.objData,this.map as Map);
     }
-    /* удаление точек 
+    /* удаление точек */
     //удалить точки с карты
     deletMarkersFromMap(){
-        this.objData.forEach((e : UserPoint) => {
-            e.setMap(null);
+        this.objData.forEach((e : Service) => {
+            e.deletePoints();
         });
     }
     //удалить точки из кластера
@@ -100,7 +178,7 @@ export default class collectionServices {
         this.deletMarkersFromMap();
         this.deleteMarkersFromClusterer();
         this.outData = [];
-    }*/
+    }
     /* отобразить (обновить даные) */
     async display(){
         await this.getData();

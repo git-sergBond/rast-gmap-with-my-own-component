@@ -14,7 +14,7 @@
           <div><input type="checkbox" v-model="filterAgeCheck"><P>Категория(ф)</p></div>
           <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
           <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
-          <button @click="clickOnDeleteUsers">Удалить точки</button>
+          <button @click="clickOnDeleteServices">Удалить точки</button>
         </div>
         <div class="item" v-for="p in outServices" :key='p.serviceid'>
           <p>{{p.serviceid}}, {{p.name}}, {{p.description}},</p>
@@ -113,12 +113,14 @@ export default Vue.extend({
     clickOnUserPoint(){
       console.log(2)
     },
+    //
     updateUsers(){
       (this.outUsers as UserPoint[]) = (this.collUsr! as collectionUsers).outData;
     },
     updateServices(){
       (this.outServices as UserPoint[]) = (this.collServ! as collectionUsers).outData;
     },
+    //
     clickOnAcceptUserFilter(){
       (this.collUsr! as collectionUsers).filter_male_active = this.filterMaleCheck;
       (this.collUsr! as collectionUsers).filter_male_value = this.filterMaleCheckMale;
@@ -138,9 +140,14 @@ export default Vue.extend({
       this.clickOnAcceptUserFilter();
       this.updateUsers();
     },
+    //
     clickOnDeleteUsers(){
       (this.collUsr! as collectionUsers).deleteMarkers();
       this.updateUsers();
+    },
+    clickOnDeleteServices(){
+      (this.collServ! as collectionServices).deleteMarkers();
+      this.updateServices();
     },
 
   }

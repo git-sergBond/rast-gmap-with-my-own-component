@@ -14,6 +14,11 @@ export default class Cluster {
             console.log('class Cluster.constructor()'+e.message)
         }
     }
+    addMark(p : Point){
+        if(!this.arrPoints) this.arrPoints = [];
+        this.arrPoints!.push(p.getInst());
+        this.clist.addMarker(p.getInst());
+    }
     clearMarkers(){
         try{
         this.clist.clearMarkers();

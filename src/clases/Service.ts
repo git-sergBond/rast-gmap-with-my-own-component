@@ -55,5 +55,7 @@ export default class Service{
     setVisiblePoints(vis : boolean){
         this.points.forEach(e=>e.setVisible(vis));
     }
-    
+    deletePoints(){
+        this.points.forEach((e : TradePoint) => e.setMap(null));
+    }
 }

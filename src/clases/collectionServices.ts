@@ -17,7 +17,6 @@ export default class collectionServices {
     constructor(map : Map, events : any[]){
         this.map = map;
         this.events = events;
-        this.getMaxAndMinPrice();
     }
 
     //запросить данные
@@ -186,6 +185,7 @@ export default class collectionServices {
     async display(){
         await this.getData();
         this.drawData();
+        this.getMaxAndMinPrice();
         this.filterClear();
     }
     /* ФИЛЬТРАЦИЯ и СОРТИРОВКА*/
@@ -226,8 +226,8 @@ export default class collectionServices {
         }
     }
     getMaxAndMinPrice(){
-        let max : number = this.outData[0].pricemax;
-        let min : number = this.outData[0].pricemax;
+        let max : number = this.objData[0].pricemax;
+        let min : number = this.objData[0].pricemax;
         for(let serv of this.objData){
             if(serv.pricemax > max) max = serv.pricemax;
             if(serv.pricemin > max) max = serv.pricemin;

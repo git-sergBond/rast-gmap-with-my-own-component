@@ -12,8 +12,8 @@
           </div>
           <div><P>Рейтинг(с)</p><button>low</button><button>high</button></div>
           <div><input type="checkbox" v-model="filterAgeCheck"><P>Категория(ф)</p></div>
-          <button @click="clickOnAcceptUserFilter">Применить фильтры</button>
-          <button @click="clickOnClearUserFilter">Сбросить фильтры</button>
+          <button @click="clickOnAcceptServicesFilter">Применить фильтры</button>
+          <button @click="clickOnClearServicesFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteServices">Удалить точки</button>
         </div>
         <div class="item" v-for="p in outServices" :key='p.serviceid'>
@@ -73,7 +73,7 @@ export default Vue.extend({
   },*/
   data() { 
     return {
-      //пользователи
+      //ПОЛЬЗОВАТЕЛИ
       collUsr : null,
       outUsers: [],
       //фильтры пользаков
@@ -82,11 +82,18 @@ export default Vue.extend({
       filterAgeCheckHigh:  200,
       filterMaleCheck : false,
       filterMaleCheckMale : false,
-      //услуги
+      //УСЛУГИ
       collServ : null,
-      outServices : []
+      outServices : [],
       //фильтры услуг
-
+      sort_by : "not",//rating
+      //фильтр по категории
+      filter_category_active : false,
+      filter_category_enum : [],
+      //фильтр по цене
+      filter_price_active : false,
+      filter_price_from : 0,
+      filter_price_to : 0,
       
   }},
   async mounted(){
@@ -107,21 +114,22 @@ export default Vue.extend({
     }
   },
   methods: {
-    clickOnTradePoint(){
+    //клик на точку на карте
+    clickOnTradePoint(){//услуга
       console.log(1)
     },
-    clickOnUserPoint(){
+    clickOnUserPoint(){//люди
       console.log(2)
     },
-    //
-    updateUsers(){
+    //обновление списков точек
+    updateUsers(){//люди
       (this.outUsers as UserPoint[]) = (this.collUsr! as collectionUsers).outData;
     },
-    updateServices(){
+    updateServices(){//услуга
       (this.outServices as UserPoint[]) = (this.collServ! as collectionUsers).outData;
     },
-    //
-    clickOnAcceptUserFilter(){
+    //применить фильтры
+    clickOnAcceptUserFilter(){//к людям
       (this.collUsr! as collectionUsers).filter_male_active = this.filterMaleCheck;
       (this.collUsr! as collectionUsers).filter_male_value = this.filterMaleCheckMale;
     
@@ -131,21 +139,37 @@ export default Vue.extend({
       (this.collUsr! as collectionUsers).filterAndSort_commit();
       this.updateUsers();
     },
-    clickOnClearUserFilter(){
+    clickOnAcceptServicesFilter(){//к услуге
+      this.updateServices();
+    },
+    //Очистить фильтры
+    clickOnClearUserFilter(){//людей
       this.filterAgeCheck = false;
       this.filterAgeCheckLow = 0;
       this.filterAgeCheckHigh = 200;
       this.filterMaleCheck = false;
       this.filterMaleCheckMale = false;
-      this.clickOnAcceptUserFilter();
+      (this.collServ! as collectionUsers).filterClear();
       this.updateUsers();
     },
-    //
-    clickOnDeleteUsers(){
+    clickOnClearServicesFilter(){//услуг
+      this.sort_by = "not"//rating
+      //фильтр по категории
+      this.filter_category_active = false;
+      this.filter_category_enum = [];
+      //фильтр по цене
+      this.filter_price_active = false;
+      this.filter_price_from = 0;
+      this.filter_price_to = 0;
+      (this.collServ! as collectionUsers).filterClear();
+      this.updateServices();
+    },
+    //Удалить точки
+    clickOnDeleteUsers(){//Людей
       (this.collUsr! as collectionUsers).deleteMarkers();
       this.updateUsers();
     },
-    clickOnDeleteServices(){
+    clickOnDeleteServices(){//Услуг
       (this.collServ! as collectionServices).deleteMarkers();
       this.updateServices();
     },

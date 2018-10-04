@@ -22,7 +22,7 @@ export default class collectionServices {
         this.srcData = [
             {
                 "service": {
-                    "serviceid":39,
+                    "serviceid":40,
                     "subjectid":6,
                     "description":
                     "блаблабла\r\r\n\rВидео: ",
@@ -185,7 +185,104 @@ export default class collectionServices {
         this.drawData();
         this.filterClear();
     }
+    /* ФИЛЬТРАЦИЯ и СОРТИРОВКА*/
+    /*
+    <<<параметры>>>
+    */
+    //сортировка 
+    public sort_by : string = "not";//rating
+    //фильтр по категории
+    public filter_category_active : boolean = false;
+    public filter_category_enum : number[] = [];
+    //фильтр по цене
+    public filter_price_active : boolean = false;
+    public filter_price_from : number = 0;
+    public filter_price_to : number = 0;
+    /*
+    <<<Функции>>>
+    */
+    //очистить фильтрацию
     filterClear(){
-        this.outData = this.objData;
+        try {
+            this.outData = this.objData;
+            //сортировка 
+            this.sort_by = "not"//rating
+            //фильтр по категории
+            this.filter_category_active = false;
+            this.filter_category_enum = [];
+            //фильтр по цене
+            this.filter_price_active = false;
+            this.filter_price_from = this.getMinPrice();
+            this.filter_price_to = this.getMaxPrice();
+            this.objData.forEach((e : Service) => e.setVisiblePoints(true));
+            this.cluster!.repaint();
+        } catch ( e ) {
+            alert('collectionUsers.filterClear() '+e.message)
+        }
+    }
+    getMaxPrice() : number{
+        let max : number = this.outData[0].pricemax;
+        for(let serv of this.outData){
+            if(serv.pricemax > max) max = serv.pricemax;
+            if(serv.pricemin > max) max = serv.pricemin;
+        }
+        return 0;
+    }
+    getMinPrice() : number{
+        let min : number = this.outData[0].pricemax;
+        for(let serv of this.outData){
+            if(serv.pricemax < min) min = serv.pricemax;
+            if(serv.pricemin < min) min = serv.pricemin;
+        }
+        return 0;
+    }
+    //фильтрация и сортировка
+    filterAndSort_commit(){
+        /*
+        let context = this;
+
+        try{
+
+        this.outData = [];
+        
+        //фильтрация
+        this.objData.forEach((e : UserPoint) => {
+            
+            let calcVisible = true;
+            if(context.filter_age_active) if(context.filter_age_from > e.age || e.age > context.filter_age_to) calcVisible = false;
+            if(context.filter_male_active) if(Boolean(e.male) != context.filter_male_value) calcVisible = false;
+            if(calcVisible) {
+                e.setVisible(false);
+                context.outData.push(e)
+            }else{
+                e.setVisible(true);
+            }
+        });*/
+        /*
+        //сортировка
+        this.objData.sort((A : UserPoint, B : UserPoint) => {
+            let res = -1;
+            switch(context.sort_by){
+                case "male":
+                    if(Number(Boolean(A.male)) > Number(Boolean(B.male))) if(context.filter_male_value) res = 1;
+                    break;
+                case "age":
+                    if()
+                    res = A.age - B.age;
+                    break;
+                case "not":
+                    console.log('not filter');
+                    break;
+                default:
+                    console.log("filterAndSort_commit() такого фильтра нет");
+            }
+            return res;
+        });
+*//*
+        this.cluster!.repaint();
+        
+    }catch(e){
+            console.log("collectionUsers.filterAndSort_commit()",e);
+    }*/
     }
 }

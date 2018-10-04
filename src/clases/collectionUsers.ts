@@ -133,8 +133,6 @@ export default class collectionUsers {
     /*
     <<<параметры>>>
     */
-    //сортировка 
-    public sort_by : string = "not";
     //фильтр по полу
     public filter_male_active : boolean = false;
     public filter_male_value : boolean = false;
@@ -153,8 +151,6 @@ export default class collectionUsers {
     filterClear(){
         try {
             this.outData = this.objData;
-            //сортировка 
-            this.sort_by = "not"
             //фильтр по полу
             this.filter_male_active = false;
             this.filter_male_value = false;
@@ -195,27 +191,6 @@ export default class collectionUsers {
                 e.setVisible(true);
             }
         });
-        /*
-        //сортировка
-        this.objData.sort((A : UserPoint, B : UserPoint) => {
-            let res = -1;
-            switch(context.sort_by){
-                case "male":
-                    if(Number(Boolean(A.male)) > Number(Boolean(B.male))) if(context.filter_male_value) res = 1;
-                    break;
-                case "age":
-                    if()
-                    res = A.age - B.age;
-                    break;
-                case "not":
-                    console.log('not filter');
-                    break;
-                default:
-                    console.log("filterAndSort_commit() такого фильтра нет");
-            }
-            return res;
-        });
-*/
         this.cluster!.repaint();
         
     }catch(e){

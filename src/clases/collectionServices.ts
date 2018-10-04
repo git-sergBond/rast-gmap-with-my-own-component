@@ -11,10 +11,13 @@ export default class collectionServices {
     private map? : Map;//ссылка на карту к которой привязан маркер
     private events : any[] = [];//события для точек
     private cluster? : Cluster;// объект кластера
-    //
+    //вычисляеме свойства
+    public minPrice : number = 0;
+    public maxPrice : number = 0;
     constructor(map : Map, events : any[]){
         this.map = map;
         this.events = events;
+        this.getMaxAndMinPrice();
     }
 
     //запросить данные
@@ -190,7 +193,8 @@ export default class collectionServices {
     <<<параметры>>>
     */
     //сортировка 
-    public sort_by : string = "not";//rating
+    public sort_by : string = "rating";//not
+    public sort_dir : boolean = false;
     //фильтр по категории
     public filter_category_active : boolean = false;
     public filter_category_enum : number[] = [];
@@ -206,35 +210,32 @@ export default class collectionServices {
         try {
             this.outData = this.objData;
             //сортировка 
-            this.sort_by = "not"//rating
+            this.sort_by = "rating"
+            this.sort_dir = false;
             //фильтр по категории
             this.filter_category_active = false;
             this.filter_category_enum = [];
             //фильтр по цене
             this.filter_price_active = false;
-            this.filter_price_from = this.getMinPrice();
-            this.filter_price_to = this.getMaxPrice();
+            this.filter_price_from = this.minPrice;
+            this.filter_price_to = this.maxPrice;
             this.objData.forEach((e : Service) => e.setVisiblePoints(true));
             this.cluster!.repaint();
         } catch ( e ) {
             alert('collectionUsers.filterClear() '+e.message)
         }
     }
-    getMaxPrice() : number{
+    getMaxAndMinPrice(){
         let max : number = this.outData[0].pricemax;
-        for(let serv of this.outData){
+        let min : number = this.outData[0].pricemax;
+        for(let serv of this.objData){
             if(serv.pricemax > max) max = serv.pricemax;
             if(serv.pricemin > max) max = serv.pricemin;
-        }
-        return 0;
-    }
-    getMinPrice() : number{
-        let min : number = this.outData[0].pricemax;
-        for(let serv of this.outData){
             if(serv.pricemax < min) min = serv.pricemax;
             if(serv.pricemin < min) min = serv.pricemin;
         }
-        return 0;
+        this.maxPrice = max;
+        this.minPrice = min;
     }
     //фильтрация и сортировка
     filterAndSort_commit(){

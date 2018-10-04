@@ -5,13 +5,13 @@
         <div class="filters">
           <h3>Услуги / Фильтры </h3>
           <div>
-            <input type="checkbox" v-model="filterAgeCheck">
+            <input type="checkbox" v-model="filter_price_active">
             <P>Цена(ф)</p>
-            <p>от</p><input type="text" size="3">
-            <p>до</p><input type="text" size=3>
+            <p>от</p><input type="text" size="3" v-model="filter_price_from">
+            <p>до</p><input type="text" size=3 v-model="filter_price_to">
           </div>
-          <div><P>Рейтинг(с)</p><button>low</button><button>high</button></div>
-          <div><input type="checkbox" v-model="filterAgeCheck"><P>Категория(ф)</p></div>
+          <div><P>Рейтинг(с)</p><button @click="sort_dir = !sort_dir"> {{ sort_dir ? 'low' : 'high'}}</button></div>
+          <div><input type="checkbox" v-model="filter_category_active"><P>Категория(ф)</p></div>
           <button @click="clickOnAcceptServicesFilter">Применить фильтры</button>
           <button @click="clickOnClearServicesFilter">Сбросить фильтры</button>
           <button @click="clickOnDeleteServices">Удалить точки</button>
@@ -58,6 +58,7 @@ import Vue from 'vue'
 import Point from '../clases/Point'
 import TradePoint from '../clases/TradePoint'
 import UserPoint from '../clases/UserPoint'
+import Service from '../clases/Service'
 import Map from '../clases/Map'
 import Cluster from '../clases/Cluster'
 import collectionUsers from '../clases/collectionUsers'
@@ -86,7 +87,8 @@ export default Vue.extend({
       collServ : null,
       outServices : [],
       //фильтры услуг
-      sort_by : "not",//rating
+      sort_by : "rating",//rating
+      sort_dir : false,
       //фильтр по категории
       filter_category_active : false,
       filter_category_enum : [],
@@ -126,7 +128,9 @@ export default Vue.extend({
       (this.outUsers as UserPoint[]) = (this.collUsr! as collectionUsers).outData;
     },
     updateServices(){//услуга
-      (this.outServices as UserPoint[]) = (this.collServ! as collectionUsers).outData;
+      (this.outServices as Service[]) = (this.collServ! as collectionServices).outData;
+      this.filter_price_from = (this.collServ! as collectionServices).minPrice;
+      this.filter_price_to = (this.collServ! as collectionServices).maxPrice;
     },
     //применить фильтры
     clickOnAcceptUserFilter(){//к людям
@@ -140,6 +144,17 @@ export default Vue.extend({
       this.updateUsers();
     },
     clickOnAcceptServicesFilter(){//к услуге
+      (this.collServ! as collectionServices).sort_by = this.sort_by;
+      (this.collServ! as collectionServices).sort_dir = this.sort_dir;
+
+      (this.collServ! as collectionServices).filter_category_active = this.filter_category_active;
+      //for (id of rec) filter_category_enum push id
+      (this.collServ! as collectionServices).filter_category_enum = this.filter_category_enum;
+
+      (this.collServ! as collectionServices).filter_price_active = this.filter_price_active;
+      (this.collServ! as collectionServices).filter_price_from = this.filter_price_from;
+      (this.collServ! as collectionServices).filter_price_to = this.filter_price_to;
+
       this.updateServices();
     },
     //Очистить фильтры
@@ -159,8 +174,8 @@ export default Vue.extend({
       this.filter_category_enum = [];
       //фильтр по цене
       this.filter_price_active = false;
-      this.filter_price_from = 0;
-      this.filter_price_to = 0;
+      this.filter_price_from = (this.collServ! as collectionServices).maxPrice;
+      this.filter_price_to = (this.collServ! as collectionServices).minPrice;
       (this.collServ! as collectionUsers).filterClear();
       this.updateServices();
     },

@@ -28,8 +28,8 @@ export default class collectionServices {
                     "subjectid":6,
                     "description":
                     "блаблабла\r\r\n\rВидео: ",
-                    "pricemin":321,
-                    "pricemax":12312,
+                    "pricemin":100,
+                    "pricemax":500,
                     "deleted":false,
                     "subjecttype":0,
                     "deletedcascade":false,
@@ -92,8 +92,8 @@ export default class collectionServices {
                         "subjectid":6,
                         "description":
                         "блаблабла\r\r\n\rВидео: ",
-                        "pricemin":321,
-                        "pricemax":12312,
+                        "pricemin":300,
+                        "pricemax":600,
                         "deleted":false,
                         "subjecttype":0,
                         "deletedcascade":false,
@@ -248,9 +248,11 @@ export default class collectionServices {
         
         //фильтрация
         this.objData.forEach((e : Service) => {
-            
             let calcVisible = true;
-            if(context.filter_price_active) if(context.filter_price_from < e.pricemin && e.pricemax < context.filter_price_to) calcVisible = false;
+
+            if(context.filter_price_active) 
+                if((context.filter_price_from > e.pricemin || e.pricemax > context.filter_price_to)) 
+                    calcVisible = false;
             if(calcVisible) {
                 e.setVisiblePoints(true);
                 context.outData.push(e)

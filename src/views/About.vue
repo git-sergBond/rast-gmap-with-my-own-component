@@ -17,7 +17,7 @@
           <button @click="clickOnDeleteServices">Удалить точки</button>
         </div>
         <div class="item" v-for="p in outServices" :key='p.serviceid'>
-          <p>{{p.serviceid}}, {{p.name}}, {{p.description}},</p>
+          <p>{{p.serviceid}}, {{p.name}}, {{p.description}}, {{p.pricemin}}, {{p.pricemax}}</p>
         </div>
       </div>
       <div ref="ssgmap" id='ssgmap-id'></div>

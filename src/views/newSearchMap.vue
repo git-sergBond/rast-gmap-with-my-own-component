@@ -3,11 +3,14 @@
         <div class="map-comp reset-margin"
             @mouseup='mouseup_event_DrawPolygonByFinger'
             @mousedown='mousedown_event_DrawPolygonByFinger'>
-            <!--<yandex-map class="ymap" zoom="8"
-                        :controls="['zoomControl']" :coords="coords"
-                        @map-was-initialized="initHandler"></yandex-map>-->
             <div ref="ssgmap"  class="ymap"></div>
         </div>
+        <search-line ref="searchln" class="search-line common-margin" 
+        @drawServices=drawServices 
+        @deletePoints=deletePoints
+        @startDrawLine=startDrawLine
+        ><!-- :getDiagonalMap=getDiagonalMap 
+        :getCenterMap=getCenterMap--></search-line>
 
         <!--(1)-->
     </div>
@@ -59,7 +62,7 @@
 */
 /*
 import formAutorize from '../components/formAutorize.vue';
-import searchLine from './newSearchMap/searchLine.vue';
+
 
 import TradePoint from '../clases/TradePoint.js';
 import categoryVue from '../components/category.vue';
@@ -70,6 +73,7 @@ import Polyline from '../clases/Polyline.js';
 */
 import Vue from 'vue'
 import Map from "../clases/Map"
+import searchLine from './newSearchMap/searchLine.vue';
 export default  Vue.extend({
     name: "newSearchMap",
     data(){
@@ -91,8 +95,8 @@ export default  Vue.extend({
         }
     },
     components: {
-        /*
-        searchLine,
+        
+        searchLine,/*
         formAutorize*/
     },
     computed: {
@@ -194,8 +198,7 @@ export default  Vue.extend({
                 */
             },
         signIn(){
-            /*
-            this.$refs.authForm.isactive = true;
+            /*this.$refs.authForm.isactive = true;
             this.$refs.authForm.numtab = 0;*/
         },
         signUp(){

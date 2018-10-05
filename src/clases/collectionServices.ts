@@ -253,8 +253,9 @@ export default class collectionServices {
             let calcVisible = true;
 
             if(context.filter_price_active) 
-                if((context.filter_price_from > e.pricemin || e.pricemax > context.filter_price_to)) 
-                    calcVisible = false;
+                //if((context.filter_price_from > e.pricemin || e.pricemax > context.filter_price_to)) 
+                if((context.filter_price_to < e.pricemin || e.pricemax < context.filter_price_from)) 
+                calcVisible = false;
             if(calcVisible) {
                 e.setVisiblePoints(true);
                 preFilter.push(e)

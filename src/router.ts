@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import newSearchMap from './views/newSearchMap.vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
@@ -9,7 +10,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: newSearchMap
     },
     {
       path: '/about',

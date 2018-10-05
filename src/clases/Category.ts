@@ -1,10 +1,9 @@
-/*import axios from 'axios';
-export default class Categori{
-    id : number
-    categoryname : string
-    parentid : number
-    description : string
-    img : string
+export default class Categori {
+    id : number = -1
+    categoryname : string = 'no name'
+    parentid : number = -1
+    description : string = 'no description'
+    img : string = 'no image'
     constructor(parseCategori : any){
         try{
             this.id = parseCategori.id; //categoryid
@@ -16,23 +15,4 @@ export default class Categori{
             console.log("class Categori.constructor() : " + e.message)
         }
     }
-    //запрос на получение списка категорйи
-    /*
-    static async getCategoriesForSite(){
-        let treeCategories = null
-        try{
-
-            
-            let res = await axios({url: 'CategoriesAPI/getCategoriesForSite', method: 'GET' })
-            treeCategories = {
-                name:"Категории", 
-                child: res.data.categories,
-                root: true
-            }
-        }catch(e){
-            console.log("class Categori.getCategoriesForSite() : " + e.message)
-        }
-        return treeCategories
-    }
 }
-*/

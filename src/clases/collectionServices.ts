@@ -102,7 +102,7 @@ export default class collectionServices {
                         "regionid":1,
                         "name":"бла-бла",
                         "numberofdisplay":0,
-                        "rating":5
+                        "rating":6
                     },
                     "points":[
                         {
@@ -245,6 +245,8 @@ export default class collectionServices {
         try{
  
         this.outData = [];
+
+        let preFilter : Service[] = [];
         
         //фильтрация
         this.objData.forEach((e : Service) => {
@@ -255,14 +257,15 @@ export default class collectionServices {
                     calcVisible = false;
             if(calcVisible) {
                 e.setVisiblePoints(true);
-                context.outData.push(e)
+                preFilter.push(e)
             }else{
                 e.setVisiblePoints(false);
             }
         });
-    
+
+        preFilter.forEach(e=>console.log(e.rating));
         //сортировка
-        this.outData = this.outData.sort((A : Service, B : Service) => {
+        this.outData = preFilter.sort((A : Service, B : Service) => {
             let res = -1;
             if(context.sort_dir){
                 if(A.rating > B.rating) res = 1;
@@ -273,7 +276,7 @@ export default class collectionServices {
             //else res = -1;
             return res;
         });
-
+        this.outData.forEach(e=>console.log(e.rating));
         this.cluster!.repaint();
         
     }catch(e){

@@ -1,5 +1,8 @@
 <template>
-  <div class="about">
+  <div class="about"><button
+       @click="CorsQuery">
+       Запрос
+      </button>
     <div class="flex-collumns">
       <div class="side-collums">
         <div class="filters">

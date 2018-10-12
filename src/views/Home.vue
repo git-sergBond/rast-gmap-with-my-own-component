@@ -14,7 +14,6 @@
                 @sliding-start="onSlideStart"
                 @sliding-end="onSlideEnd"
     >
-
       <!-- Text slides with image -->
       <b-carousel-slide caption="First slide"
                         text="Nulla vitae elit libero, a pharetra augue mollis interdum."

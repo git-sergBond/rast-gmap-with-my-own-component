@@ -2,23 +2,23 @@
     <div class="my-vars">
         <div class="flex-search-line">
             <div class="flex-search-line--line angle-right2 shadow">
-                <img class="icons2 common-margin" src="images/icons/searching-magnifying-glass.png">
+                <img class="icons2 common-margin" src="../../images/icons/searching-magnifying-glass.png">
                 <input type="text" class="search-query common-margin" 
                 v-model="userQuery" 
                 @focus="searchFocus" 
                 @blur="searchBlur" placeholder="Поиск" >
             </div>
             <div class="flex-search-btn" @click="clickSearch" >
-                <img class="icons" style="width: 28px; height: 28px" src="images/icons/searching-magnifying-glass.png">
+                <img class="icons" style="width: 28px; height: 28px" src="../../images/icons/searching-magnifying-glass.png">
             </div>
             <div class="flex-search-btn" @click="clickSearchInPolygon" >
-                <img class="icons" style="width: 28px; height: 28px" src="images/icons/palets.png">
+                <img class="icons" style="width: 28px; height: 28px" src="../../images/icons/palets.png">
                 </div>
             <div class="flex-search-btn" @click="clickSearchMicro" >
-                <img class="icons" style="width: 28px; height: 28px" src="images/icons/micro52.png">
+                <img class="icons" style="width: 28px; height: 28px" src="../../images/icons/micro52.png">
             </div>
         </div>
-        
+        <!--
         <ofen-used v-show="getLastState == 0" 
              @event_getServices="getServices"></ofen-used>
 
@@ -40,6 +40,7 @@
         <full-info v-if="getLastState == 4" :service="curentService" 
             @beforeState="beforeState"
         ></full-info>
+        -->
     </div>
 </template>
 
@@ -91,24 +92,19 @@ export default {
     },
     methods: {
         searchFocus(){
-            /*
-            this.changeState(1)*/
+            this.changeState(1)
         },
         searchBlur(){
-            /*
-            if(this.getLastState() != 1) this.beforeState()*/
+            if(this.getLastState != 1) this.beforeState()
         },
         clearAutocomplete(){
-            /*
-            this.dataAutocomplete = []*/
+            this.dataAutocomplete = []
         },
         changeState(newState){
-            /*
-            this.stateQueue.push(newState)*/
+            this.stateQueue.push(newState)
         },
         beforeState(){
-            /*
-            this.stateQueue.pop()*/
+            this.stateQueue.pop()
         },
         deletePoints(){
             /*
@@ -156,12 +152,10 @@ export default {
             */
         },
         async clickSearch(){
-            /*
             await this.getServices({
                 typeQuery: 0,
                 userQuery: this.userQuery
             });
-            */
           //  this.changeState(4);
         },
         //поиск в полигоне
@@ -172,7 +166,6 @@ export default {
         },
         //спомощьъю микрофона
         clickSearchMicro(){
-            /*
             // Создаем распознаватель
             let recognizer = new webkitSpeechRecognition();
 
@@ -196,7 +189,7 @@ export default {
         };
 
         // Начинаем слушать микрофон и распознавать голос
-        recognizer.start();*/
+        recognizer.start();
         },
         showFullInfo(service){
             /*
